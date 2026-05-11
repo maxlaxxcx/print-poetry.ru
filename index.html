@@ -191,6 +191,7 @@ footer{background:var(--milky);border-top:var(--border-light);padding:2.5rem 0;m
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:0.01ms!important;transition-duration:0.01ms!important}html{scroll-behavior:auto}}
 </style>
 <base target="_blank">
+<base target="_blank">
 </head>
 <body>
 <header role="banner">
@@ -240,7 +241,7 @@ footer{background:var(--milky);border-top:var(--border-light);padding:2.5rem 0;m
 <p class="lead">Каждый принт — как набросок из личного дневника: акварельные разводы, пастельная дымка и любовь к деталям.</p>
 <p>Все изделия создаются в ограниченном тираже. Я использую премиальный хлопок и лён, а принты наносят экологичными красками.</p>
 </div>
-<div class="about-img"><img src="https://picsum.photos/seed/printstudio/800/600" alt="Мастерская" loading="lazy"></div>
+<div class="about-img"><img src="https://images.unsplash.com/photo-1558618666-fcd25c85f82e?w=800&h=600&fit=crop" alt="Мастерская" loading="lazy"></div>
 </div>
 </section>
 </div>
@@ -273,19 +274,17 @@ footer{background:var(--milky);border-top:var(--border-light);padding:2.5rem 0;m
 <h2 class="fade-section">Обо мне & Контакты</h2>
 <div class="about-layout fade-section">
 <div class="about-text">
-<p class="lead">Меня зовут Алиса, я художник-иллюстратор и создатель бренда PRINT POETRY.</p>
+<p class="lead">Меня зовут Максим, я художник-иллюстратор и создатель бренда PRINT POETRY.</p>
 <p>Принты рождаются из смешения акварели, туши и цифровой обработки.</p>
 <p>Каждое изделие — результат вдохновения природой, тишиной и эстетикой повседневности.</p>
 </div>
-<div class="about-img"><img src="https://picsum.photos/seed/alisaartist/800/1000" alt="Алиса" loading="lazy"></div>
+<div class="about-img"><img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&h=1000&fit=crop" alt="Максим" loading="lazy"></div>
 </div>
 <div class="contact-section fade-section">
 <div class="contact-info">
 <h3>Контакты</h3>
 <p>✉ <a href="mailto:print.poetry@art.me">print.poetry@art.me</a></p>
-<p>📍 Москва, доставка по всей России</p>
-<p>📱 <a href="https://t.me/print_poetry" target="_blank" rel="noopener">Telegram</a></p>
-<p>📷 <a href="https://instagram.com/print_poetry" target="_blank" rel="noopener">Instagram</a></p>
+<p>📍 Сальск, доставка по всей России</p>
 </div>
 <div class="contact-form">
 <h3 style="font-weight:400;margin-bottom:1.5rem;font-size:1.4rem">Написать мне</h3>
@@ -357,7 +356,7 @@ footer{background:var(--milky);border-top:var(--border-light);padding:2.5rem 0;m
 <div class="footer-grid">
 <div class="footer-brand">
 <a href="#home" class="logo" data-page="home">PRINT <span>POETRY</span></a>
-<p>Авторские акварельные принты. Ограниченные тиражи из Москвы.</p>
+<p>Авторские акварельные принты. Ограниченные тиражи из Сальска.</p>
 </div>
 <div class="footer-col">
 <h4>Магазин</h4>
@@ -382,6 +381,175 @@ footer{background:var(--milky);border-top:var(--border-light);padding:2.5rem 0;m
 </footer>
 
 <script>
+// Sample products data - встроенные товары
+const sampleProducts = [
+  {
+    id: 1,
+    name: "Футболка 'Акварельный рассвет'",
+    description: "Премиальный хлопок 180 г/м². Авторский принт в пастельных тонах. Унисекс, свободный крой.",
+    price: 2490,
+    category: "tshirt",
+    badge: "Новинка",
+    tags: "акварель, рассвет, пастель",
+    stock: 12,
+    image: "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=600&h=600&fit=crop"
+  },
+  {
+    id: 2,
+    name: "Футболка 'Туманный лес'",
+    description: "Мягкий хлопок с льняной вставкой. Принт в технике цифровой акварели. Лимитированная серия.",
+    price: 2790,
+    category: "tshirt",
+    badge: "Лимитка",
+    tags: "лес, туман, природа",
+    stock: 8,
+    image: "https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?w=600&h=600&fit=crop"
+  },
+  {
+    id: 3,
+    name: "Футболка 'Цветочная поэзия'",
+    description: "Нежный принт с полевыми цветами. 100% органический хлопок. Прямой крой, округлый вырез.",
+    price: 2290,
+    category: "tshirt",
+    badge: "",
+    tags: "цветы, поэзия, весна",
+    stock: 15,
+    image: "https://images.unsplash.com/photo-1576566588028-4147f3842f27?w=600&h=600&fit=crop"
+  },
+  {
+    id: 4,
+    name: "Футболка 'Минималистичные линии'",
+    description: "Чёрно-белый принт в стиле линейной графики. Плотный хлопок 200 г/м². Oversize fit.",
+    price: 1990,
+    category: "tshirt",
+    badge: "Хит",
+    tags: "минимализм, линии, графика",
+    stock: 20,
+    image: "https://images.unsplash.com/photo-1583743814966-8936f5b7be1a?w=600&h=600&fit=crop"
+  },
+  {
+    id: 5,
+    name: "Футболка 'Пастельные облака'",
+    description: "Воздушный принт с розовыми и лавандовыми оттенками. Лёгкий хлопок для летних дней.",
+    price: 2190,
+    category: "tshirt",
+    badge: "",
+    tags: "облака, пастель, небо",
+    stock: 10,
+    image: "https://images.unsplash.com/photo-1503341504253-dff4815485f1?w=600&h=600&fit=crop"
+  },
+  {
+    id: 6,
+    name: "Сумка-шоппер 'Акварельный сад'",
+    description: "Большая тканевая сумка из плотного хлопка. Двусторонний принт. Вместительная, с внутренним карманом.",
+    price: 1890,
+    category: "bag",
+    badge: "Новинка",
+    tags: "сад, акварель, шоппер",
+    stock: 18,
+    image: "https://images.unsplash.com/photo-1590874103328-eac38a683ce7?w=600&h=600&fit=crop"
+  },
+  {
+    id: 7,
+    name: "Сумка через плечо 'Монохром'",
+    description: "Компактная сумка с регулируемым ремнём. Чёрно-белый принт в стиле ink art. Застёжка-молния.",
+    price: 1590,
+    category: "bag",
+    badge: "",
+    tags: "монохром, ink, минимализм",
+    stock: 14,
+    image: "https://images.unsplash.com/photo-1544816155-12df9643f363?w=600&h=600&fit=crop"
+  },
+  {
+    id: 8,
+    name: "Сумка 'Полевые травы'",
+    description: "Эко-сумка из небелёного хлопка. Натуральные оттенки принта. Удобные длинные ручки.",
+    price: 1290,
+    category: "bag",
+    badge: "Эко",
+    tags: "эко, травы, природа",
+    stock: 25,
+    image: "https://images.unsplash.com/photo-1597484662317-9bd7bdda2907?w=600&h=600&fit=crop"
+  },
+  {
+    id: 9,
+    name: "Шоппер 'Геометрия тишины'",
+    description: "Минималистичный шоппер с абстрактным принтом. Плотная ткань, усиленное дно.",
+    price: 1690,
+    category: "bag",
+    badge: "",
+    tags: "геометрия, абстракция, тишина",
+    stock: 11,
+    image: "https://images.unsplash.com/photo-1559563458-527698bf5295?w=600&h=600&fit=crop"
+  },
+  {
+    id: 10,
+    name: "Набор значков 'Мини-принты'",
+    description: "Три металлических значка Ø32 мм с авторскими миниатюрами. Закат, луна, цветок.",
+    price: 590,
+    category: "accessory",
+    badge: "Набор",
+    tags: "значки, миниатюра, набор",
+    stock: 30,
+    image: "https://images.unsplash.com/photo-1590736969955-71cc94901144?w=600&h=600&fit=crop"
+  },
+  {
+    id: 11,
+    name: "Шоппер 'Волны и песок'",
+    description: "Летний шоппер с морским принтом. Лёгкий хлопок, быстро сохнет. Идеален для пляжа.",
+    price: 1490,
+    category: "bag",
+    badge: "",
+    tags: "море, волны, лето",
+    stock: 16,
+    image: "https://images.unsplash.com/photo-1597484661643-2f5fef640dd1?w=600&h=600&fit=crop"
+  },
+  {
+    id: 12,
+    name: "Постер 'Акварельный пейзаж'",
+    description: "А3, плотная матовая бумага 300 г/м². Авторский пейзаж в пастельных тонах. Без рамки.",
+    price: 890,
+    category: "accessory",
+    badge: "",
+    tags: "постер, пейзаж, акварель",
+    stock: 22,
+    image: "https://images.unsplash.com/photo-1513519245088-0e12902e35ca?w=600&h=600&fit=crop"
+  },
+  {
+    id: 13,
+    name: "Открытки 'Поэтические мотивы'",
+    description: "Набор из 5 авторских открыток с конвертами. Акварельные миниатюры на плотном картоне.",
+    price: 450,
+    category: "accessory",
+    badge: "Набор",
+    tags: "открытки, миниатюра, подарок",
+    stock: 40,
+    image: "https://images.unsplash.com/photo-1586075010923-2dd4570fb338?w=600&h=600&fit=crop"
+  },
+  {
+    id: 14,
+    name: "Футболка 'Чернильная абстракция'",
+    description: "Арт-принт в технике чернильной графики. Свободный крой, плотный хлопок. Для ценителей минимализма.",
+    price: 2590,
+    category: "tshirt",
+    badge: "Арт",
+    tags: "чернила, абстракция, арт",
+    stock: 9,
+    image: "https://images.unsplash.com/photo-1618354691373-d851c5c3a990?w=600&h=600&fit=crop"
+  },
+  {
+    id: 15,
+    name: "Сумка 'Пастельная геометрия'",
+    description: "Сумка с мягким геометрическим принтом. Пыльно-розовые и бежевые тона. Магнитная застёжка.",
+    price: 1790,
+    category: "bag",
+    badge: "",
+    tags: "геометрия, пастель, бежевый",
+    stock: 13,
+    image: "https://images.unsplash.com/photo-1590874103328-eac38a683ce7?w=600&h=600&fit=crop"
+  }
+];
+
 const API_BASE = 'https://print-poetry-api.onrender.com';
 let products = [];
 const CART_KEY = 'pp_cart_v2';
@@ -404,9 +572,15 @@ async function api(method, endpoint, body) {
 }
 
 async function loadProducts() {
+  // Сначала пробуем загрузить с API
   const data = await api('GET', '/api/products');
-  if (data.error) { showToast('Не удалось загрузить товары', 'error'); return; }
-  products = data;
+  if (!data.error && Array.isArray(data) && data.length > 0) {
+    products = data;
+  } else {
+    // Если API недоступен — используем встроенные товары
+    products = sampleProducts;
+    showToast('Товары загружены локально', 'info');
+  }
   renderFeatured();
   renderCatalog();
 }
@@ -441,7 +615,7 @@ class Cart {
 const cart = new Cart();
 
 function renderCard(p) {
-  const img = p.image_url || p.image || 'https://picsum.photos/seed/placeholder/600/600';
+  const img = p.image_url || p.image || 'https://images.unsplash.com/photo-1558618666-fcd25c85f82e?w=600&h=600&fit=crop';
   return '<article class="product-card fade-section" data-id="' + p.id + '" data-category="' + p.category + '">' +
     '<div class="card-img-wrap"><img src="' + img + '" alt="' + esc(p.name) + '" loading="lazy">' +
     (p.badge ? '<span class="card-badge">' + esc(p.badge) + '</span>' : '') + '</div>' +
@@ -480,7 +654,7 @@ function attachEvents(cards) {
 
 function openModal(id) {
   const p = products.find(x => x.id === id); if (!p) return;
-  const img = p.image_url || p.image || 'https://picsum.photos/seed/placeholder/600/600';
+  const img = p.image_url || p.image || 'https://images.unsplash.com/photo-1558618666-fcd25c85f82e?w=600&h=600&fit=crop';
   const tags = (p.tags || '').split(',').map(t => t.trim()).filter(t => t).map(t => '<span>#' + esc(t) + '</span>').join('');
   $('#modalContent').innerHTML = '<div class="modal-img"><img src="' + img + '" alt="' + esc(p.name) + '"></div>' +
     '<div class="modal-info"><h3>' + esc(p.name) + '</h3><div class="price">' + fmtPrice(p.price) + '</div>' +
@@ -510,7 +684,7 @@ function renderCart() {
   empty.classList.add('hidden'); summary.classList.remove('hidden'); checkout.classList.add('hidden');
   container.innerHTML = cart.items.map(item => {
     const p = products.find(x => x.id === item.id) || {};
-    const img = p.image_url || p.image || 'https://picsum.photos/seed/placeholder/600/600';
+    const img = p.image_url || p.image || 'https://images.unsplash.com/photo-1558618666-fcd25c85f82e?w=600&h=600&fit=crop';
     return '<div class="cart-item" data-id="' + item.id + '"><img src="' + img + '" alt="' + esc(p.name || '') + '" loading="lazy">' +
       '<div class="cart-item-info"><h4>' + esc(p.name || '') + '</h4><p>' + esc(p.description || p.desc || '') + '</p>' +
       '<span class="remove-item" data-id="' + item.id + '">Удалить</span></div>' +
