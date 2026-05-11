@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PRINT POETRY — Админ-панель</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #faf7f2; --milky: #fdf8f5; --dusty: #e3cdc1;
+      --text: #4a4240; --soft: #7a6f6c; --accent: #d4b7ae;
+      --success: #6b9e75; --error: #c45b5b; --warning: #d4a017;
+      --shadow: 0 4px 12px rgba(0,0,0,0.04); --radius: 16px;
+    }
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); line-height:1.5; }
+    .login-screen { min-height:100vh; display:flex; align-items:center; justify-content:center; }
+    .login-box { background:var(--milky); padding:2.5rem; border-radius:var(--radius); width:100%; max-width:400px; box-shadow:var(--shadow); }
+    .login-box h1 { font-size:1.5rem; margin-bottom:1.5rem; font-weight:400; }
+    .form-group { margin-bottom:1rem; }
+    .form-group label { display:block; font-size:0.85rem; color:var(--soft); margin-bottom:0.3rem; }
+    .form-group input { width:100%; padding:0.7rem 1rem; border:1px solid #e4d8d1; border-radius:12px; font-size:1rem; background:#fefcf9; }
+    .form-group input:focus { outline:none; border-color:var(--dusty); }
+    .btn { width:100%; padding:0.8rem; background:var(--dusty); border:none; border-radius:12px; color:#2f2a28; font-size:1rem; font-weight:500; cursor:pointer; transition:0.2s; margin-top:0.5rem; }
+    .btn:hover { background:#d0b7aa; }
+    .btn-secondary { background:var(--soft); color:#fff; }
+    .error { color:var(--error); font-size:0.85rem; margin-top:0.5rem; }
+
+    .app { display:none; min-height:100vh; }
+    .app.show { display:flex; }
+    .sidebar { width:260px; background:var(--milky); border-right:1px solid rgba(180,150,140,0.12); padding:1.5rem; position:fixed; height:100vh; }
+    .sidebar h2 { font-size:1.2rem; font-weight:400; margin-bottom:2rem; }
+    .sidebar h2 span { color:var(--accent); font-weight:300; }
+    .nav-item { display:block; padding:0.7rem 1rem; border-radius:10px; color:var(--soft); cursor:pointer; transition:0.2s; margin-bottom:0.3rem; font-size:0.95rem; }
+    .nav-item:hover, .nav-item.active { background:var(--dusty); color:#2f2a28; }
+    .nav-item .count { float:right; background:var(--accent); color:#fff; font-size:0.7rem; padding:0.15rem 0.5rem; border-radius:10px; }
+    .logout { position:absolute; bottom:1.5rem; left:1.5rem; right:1.5rem; }
+
+    .main { margin-left:260px; flex:1; padding:2rem; }
+    .header { display:flex; justify-content:space-between; align-items:center; margin-bottom:2rem; }
+    .header h1 { font-size:1.6rem; font-weight:400; }
+    .stats { display:grid; grid-template-columns:repeat(auto-fill, minmax(200px,1fr)); gap:1rem; margin-bottom:2rem; }
+    .stat-card { background:var(--milky); padding:1.5rem; border-radius:var(--radius); box-shadow:var(--shadow); }
+    .stat-card .label { font-size:0.85rem; color:var(--soft); margin-bottom:0.3rem; }
+    .stat-card .value { font-size:1.8rem; font-weight:500; }
+
+    .table-wrap { background:var(--milky); border-radius:var(--radius); overflow:hidden; box-shadow:var(--shadow); }
+    table { width:100%; border-collapse:collapse; }
+    th, td { padding:0.9rem 1.2rem; text-align:left; font-size:0.9rem; }
+    th { background:rgba(227,205,193,0.3); font-weight:500; color:var(--soft); font-size:0.8rem; text-transform:uppercase; letter-spacing:0.05em; }
+    tr { border-bottom:1px solid rgba(180,150,140,0.1); }
+    tr:hover { background:rgba(227,205,193,0.1); }
+    .badge { display:inline-block; padding:0.2rem 0.6rem; border-radius:10px; font-size:0.75rem; font-weight:500; }
+    .badge-pending { background:#fff3e0; color:var(--warning); }
+    .badge-paid { background:#e8f5e9; color:var(--success); }
+    .badge-confirmed { background:#e3f2fd; color:#1976d2; }
+    .badge-shipped { background:#f3e5f5; color:#7b1fa2; }
+    .badge-delivered { background:#e8f5e9; color:var(--success); }
+    .badge-cancelled { background:#ffebee; color:var(--error); }
+
+    .actions { display:flex; gap:0.5rem; }
+    .btn-sm { padding:0.4rem 0.8rem; font-size:0.8rem; border-radius:8px; border:none; cursor:pointer; }
+    .btn-edit { background:var(--dusty); color:#2f2a28; }
+    .btn-delete { background:var(--error); color:#fff; }
+    .btn-view { background:var(--soft); color:#fff; }
+
+    .modal-overlay { position:fixed; inset:0; background:rgba(0,0,0,0.4); z-index:100; display:none; align-items:center; justify-content:center; padding:1rem; }
+    .modal-overlay.open { display:flex; }
+    .modal { background:var(--milky); border-radius:var(--radius); max-width:600px; width:100%; max-height:90vh; overflow-y:auto; padding:2rem; }
+    .modal h2 { margin-bottom:1.5rem; font-weight:400; }
+    .modal .form-group textarea { min-height:100px; resize:vertical; }
+    .modal-actions { display:flex; gap:1rem; margin-top:1.5rem; }
+    .modal-actions .btn { width:auto; padding:0.7rem 1.5rem; }
+    .modal-close { float:right; font-size:1.5rem; cursor:pointer; color:var(--soft); }
+
+    .hidden { display:none !important; }
+    .section { display:none; }
+    .section.active { display:block; }
+
+    @media (max-width:768px) {
+      .sidebar { width:100%; position:relative; height:auto; }
+      .app { flex-direction:column; }
+      .main { margin-left:0; }
+    }
+  </style>
+</head>
+<body>
+  <div class="login-screen" id="loginScreen">
+    <div class="login-box">
+      <h1>PRINT <span style="color:var(--accent);font-weight:300;">POETRY</span> — Админ</h1>
+      <div class="form-group">
+        <label>Логин</label>
+        <input type="text" id="loginUser" placeholder="admin" autocomplete="username">
+      </div>
+      <div class="form-group">
+        <label>Пароль</label>
+        <input type="password" id="loginPass" placeholder="admin123" autocomplete="current-password">
+      </div>
+      <button class="btn" onclick="doLogin()">Войти</button>
+      <div class="error" id="loginError"></div>
+    </div>
+  </div>
+
+  <div class="app" id="app">
+    <aside class="sidebar">
+      <h2>PRINT <span>POETRY</span></h2>
+      <div class="nav-item active" onclick="showSection('dashboard')">📊 Дашборд</div>
+      <div class="nav-item" onclick="showSection('orders')">📦 Заказы <span class="count" id="orderCount">0</span></div>
+      <div class="nav-item" onclick="showSection('products')">🎨 Товары <span class="count" id="productCount">0</span></div>
+      <div class="nav-item" onclick="showSection('settings')">⚙️ Настройки</div>
+      <button class="btn btn-secondary logout" onclick="doLogout()">Выйти</button>
+    </aside>
+
+    <main class="main">
+      <!-- DASHBOARD -->
+      <div class="section active" id="dashboard">
+        <div class="header"><h1>Дашборд</h1><span id="currentDate"></span></div>
+        <div class="stats">
+          <div class="stat-card"><div class="label">Всего заказов</div><div class="value" id="statOrders">0</div></div>
+          <div class="stat-card"><div class="label">Оплачено</div><div class="value" id="statPaid">0</div></div>
+          <div class="stat-card"><div class="label">Выручка</div><div class="value" id="statRevenue">0 ₽</div></div>
+          <div class="stat-card"><div class="label">Товаров</div><div class="value" id="statProducts">0</div></div>
+        </div>
+      </div>
+
+      <!-- ORDERS -->
+      <div class="section" id="orders">
+        <div class="header"><h1>Заказы</h1></div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>№</th><th>Клиент</th><th>Сумма</th><th>Статус</th><th>Оплата</th><th>Дата</th><th>Действия</th></tr></thead>
+            <tbody id="ordersTable"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- PRODUCTS -->
+      <div class="section" id="products">
+        <div class="header"><h1>Товары</h1><button class="btn btn-sm btn-edit" onclick="openProductModal()">+ Добавить</button></div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>ID</th><th>Название</th><th>Категория</th><th>Цена</th><th>Остаток</th><th>Статус</th><th>Действия</th></tr></thead>
+            <tbody id="productsTable"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- SETTINGS -->
+      <div class="section" id="settings">
+        <div class="header"><h1>Настройки</h1></div>
+        <div class="table-wrap" style="padding:2rem; max-width:500px;">
+          <h3 style="margin-bottom:1rem;font-weight:400;">Смена пароля</h3>
+          <div class="form-group">
+            <label>Текущий пароль</label>
+            <input type="password" id="currentPass">
+          </div>
+          <div class="form-group">
+            <label>Новый пароль</label>
+            <input type="password" id="newPass">
+          </div>
+          <button class="btn" onclick="changePassword()">Изменить пароль</button>
+          <div class="error" id="passError"></div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- PRODUCT MODAL -->
+  <div class="modal-overlay" id="productModal">
+    <div class="modal">
+      <span class="modal-close" onclick="closeProductModal()">&times;</span>
+      <h2 id="modalTitle">Новый товар</h2>
+      <input type="hidden" id="productId">
+      <div class="form-group"><label>Название *</label><input type="text" id="pName" required></div>
+      <div class="form-group"><label>Slug (URL) *</label><input type="text" id="pSlug" required placeholder="pionoviy-sad"></div>
+      <div class="form-group"><label>Категория *</label>
+        <select id="pCategory" style="width:100%;padding:0.7rem;border:1px solid #e4d8d1;border-radius:12px;background:#fefcf9;">
+          <option value="tshirt">Футболки</option><option value="bag">Сумки</option><option value="accessory">Аксессуары</option>
+        </select>
+      </div>
+      <div class="form-group"><label>Цена (₽) *</label><input type="number" id="pPrice" required min="0"></div>
+      <div class="form-group"><label>Описание</label><textarea id="pDesc"></textarea></div>
+      <div class="form-group"><label>URL изображения</label><input type="url" id="pImage" placeholder="https://..."></div>
+      <div class="form-group"><label>Теги (через запятую)</label><input type="text" id="pTags" placeholder="акварель,цветы"></div>
+      <div class="form-group"><label>Бейдж</label><input type="text" id="pBadge" placeholder="Бестселлер, Новинка..."></div>
+      <div class="form-group"><label>Остаток</label><input type="number" id="pStock" value="10" min="0"></div>
+      <div class="modal-actions">
+        <button class="btn" onclick="saveProduct()">Сохранить</button>
+        <button class="btn btn-secondary" onclick="closeProductModal()">Отмена</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const API_URL = window.location.origin.replace('/admin','');
+    let token = localStorage.getItem('pp_admin_token');
+
+    if (token) { document.getElementById('loginScreen').classList.add('hidden'); document.getElementById('app').classList.add('show'); loadAll(); }
+
+    async function api(method, endpoint, body=null) {
+      const opts = { method, headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json' } };
+      if (body) opts.body = JSON.stringify(body);
+      const res = await fetch(API_URL + endpoint, opts);
+      if (res.status === 401) { localStorage.removeItem('pp_admin_token'); location.reload(); }
+      return res.json();
+    }
+
+    async function doLogin() {
+      const user = document.getElementById('loginUser').value;
+      const pass = document.getElementById('loginPass').value;
+      const res = await fetch(API_URL + '/api/admin/login', {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username: user, password: pass })
+      });
+      const data = await res.json();
+      if (data.token) {
+        token = data.token;
+        localStorage.setItem('pp_admin_token', token);
+        document.getElementById('loginScreen').classList.add('hidden');
+        document.getElementById('app').classList.add('show');
+        loadAll();
+      } else {
+        document.getElementById('loginError').textContent = data.error || 'Ошибка входа';
+      }
+    }
+
+    function doLogout() { localStorage.removeItem('pp_admin_token'); location.reload(); }
+
+    function showSection(id) {
+      document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+      document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+      document.getElementById(id).classList.add('active');
+      event.target.classList.add('active');
+    }
+
+    async function loadAll() {
+      document.getElementById('currentDate').textContent = new Date().toLocaleDateString('ru-RU');
+      await loadOrders();
+      await loadProducts();
+    }
+
+    async function loadOrders() {
+      const orders = await api('GET', '/api/admin/orders');
+      const tbody = document.getElementById('ordersTable');
+      tbody.innerHTML = orders.map(o => {
+        const items = JSON.parse(o.items || '[]');
+        const statusClass = 'badge-' + (o.status || 'pending');
+        const payClass = 'badge-' + (o.payment_status || 'pending');
+        return `<tr>
+          <td>${o.order_number}</td>
+          <td>${o.customer_name}<br><small style="color:var(--soft)">${o.customer_email}</small></td>
+          <td>${(o.total_amount/100).toFixed(0)} ₽</td>
+          <td><span class="badge ${statusClass}">${statusLabels[o.status]||o.status}</span></td>
+          <td><span class="badge ${payClass}">${payLabels[o.payment_status]||o.payment_status}</span></td>
+          <td>${new Date(o.created_at).toLocaleDateString('ru-RU')}</td>
+          <td class="actions">
+            <button class="btn-sm btn-view" onclick='viewOrder(${JSON.stringify(o)})'>👁</button>
+            <button class="btn-sm btn-edit" onclick='updateOrderStatus(${o.id},"confirmed")'>✓</button>
+            <button class="btn-sm btn-delete" onclick='updateOrderStatus(${o.id},"cancelled")'>✕</button>
+          </td>
+        </tr>`;
+      }).join('');
+      document.getElementById('orderCount').textContent = orders.length;
+      document.getElementById('statOrders').textContent = orders.length;
+      document.getElementById('statPaid').textContent = orders.filter(o=>o.payment_status==='paid').length;
+      document.getElementById('statRevenue').textContent = (orders.filter(o=>o.payment_status==='paid').reduce((s,o)=>s+o.total_amount,0)/100).toFixed(0) + ' ₽';
+    }
+
+    const statusLabels = { pending:'Ожидает', confirmed:'Подтверждён', shipped:'Отправлен', delivered:'Доставлен', cancelled:'Отменён' };
+    const payLabels = { pending:'Не оплачен', paid:'Оплачен', failed:'Ошибка' };
+
+    async function loadProducts() {
+      const products = await api('GET', '/api/products?active=true');
+      const tbody = document.getElementById('productsTable');
+      tbody.innerHTML = products.map(p => `<tr>
+        <td>${p.id}</td>
+        <td>${p.name}</td>
+        <td>${catLabels[p.category]||p.category}</td>
+        <td>${p.price} ₽</td>
+        <td>${p.stock}</td>
+        <td>${p.active?'Активен':'Скрыт'}</td>
+        <td class="actions">
+          <button class="btn-sm btn-edit" onclick='editProduct(${JSON.stringify(p)})'>✎</button>
+          <button class="btn-sm btn-delete" onclick='deleteProduct(${p.id})'>🗑</button>
+        </td>
+      </tr>`).join('');
+      document.getElementById('productCount').textContent = products.length;
+      document.getElementById('statProducts').textContent = products.length;
+    }
+
+    const catLabels = { tshirt:'Футболки', bag:'Сумки', accessory:'Аксессуары' };
+
+    function openProductModal() {
+      document.getElementById('modalTitle').textContent = 'Новый товар';
+      document.getElementById('productId').value = '';
+      ['pName','pSlug','pPrice','pDesc','pImage','pTags','pBadge','pStock'].forEach(id => document.getElementById(id).value = '');
+      document.getElementById('pStock').value = '10';
+      document.getElementById('productModal').classList.add('open');
+    }
+
+    function editProduct(p) {
+      document.getElementById('modalTitle').textContent = 'Редактировать товар';
+      document.getElementById('productId').value = p.id;
+      document.getElementById('pName').value = p.name;
+      document.getElementById('pSlug').value = p.slug;
+      document.getElementById('pCategory').value = p.category;
+      document.getElementById('pPrice').value = p.price;
+      document.getElementById('pDesc').value = p.description || '';
+      document.getElementById('pImage').value = p.image_url || '';
+      document.getElementById('pTags').value = p.tags || '';
+      document.getElementById('pBadge').value = p.badge || '';
+      document.getElementById('pStock').value = p.stock;
+      document.getElementById('productModal').classList.add('open');
+    }
+
+    function closeProductModal() { document.getElementById('productModal').classList.remove('open'); }
+
+    async function saveProduct() {
+      const id = document.getElementById('productId').value;
+      const body = {
+        name: document.getElementById('pName').value,
+        slug: document.getElementById('pSlug').value,
+        category: document.getElementById('pCategory').value,
+        price: parseInt(document.getElementById('pPrice').value),
+        description: document.getElementById('pDesc').value,
+        image_url: document.getElementById('pImage').value,
+        tags: document.getElementById('pTags').value,
+        badge: document.getElementById('pBadge').value,
+        stock: parseInt(document.getElementById('pStock').value),
+        active: true
+      };
+      if (id) await api('PUT', '/api/admin/products/' + id, body);
+      else await api('POST', '/api/admin/products', body);
+      closeProductModal();
+      loadProducts();
+    }
+
+    async function deleteProduct(id) {
+      if (!confirm('Скрыть этот товар?')) return;
+      await api('DELETE', '/api/admin/products/' + id);
+      loadProducts();
+    }
+
+    async function updateOrderStatus(id, status) {
+      await api('PATCH', '/api/admin/orders/' + id, { status, payment_status: status === 'cancelled' ? 'failed' : undefined });
+      loadOrders();
+    }
+
+    function viewOrder(o) {
+      const items = JSON.parse(o.items || '[]');
+      alert(`Заказ ${o.order_number}\n\nКлиент: ${o.customer_name}\nEmail: ${o.customer_email}\nТелефон: ${o.customer_phone||'-'}\nАдрес: ${o.customer_address||'-'}\n\nТовары:\n${items.map(i=>`- Товар #${i.id}: ${i.qty} шт`).join('\n')}\n\nИтого: ${(o.total_amount/100).toFixed(0)} ₽\nДоставка: ${o.delivery_cost? (o.delivery_cost/100).toFixed(0)+' ₽' : 'Бесплатно'}`);
+    }
+
+    async function changePassword() {
+      const cur = document.getElementById('currentPass').value;
+      const neu = document.getElementById('newPass').value;
+      const res = await api('POST', '/api/admin/change-password', { currentPassword: cur, newPassword: neu });
+      document.getElementById('passError').textContent = res.error || res.message;
+      document.getElementById('passError').style.color = res.error ? 'var(--error)' : 'var(--success)';
+    }
+  </script>
+</body>
+</html>
