@@ -1,785 +1,966 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PRINT POETRY</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Playfair+Display:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            /* Фирменная палитра бренда (Нюдовые, пастельные и глубокие кофейные тона) */
-            --dusty-pink: #e3cdc1;
-            --milky: #fdf8f5;
-            --soft-beige: #efe5dd;
-            --text-dark: #2a2421; /* Сделан чуть глубже для лучшей читаемости */
-            --text-soft: #6e625e;
-            --accent-rose: #d4b7ae;
-            --bg-main: #fcf9f5;
-            
-            /* Системные цвета */
-            --error: #b84a4a;
-            --success: #5a8762;
-            
-            /* Декоративные элементы */
-            --shadow-soft: 0 10px 35px rgba(42, 36, 33, 0.03);
-            --shadow-card: 0 16px 40px rgba(42, 36, 33, 0.04);
-            --border-light: 1px solid rgba(110, 98, 94, 0.09);
-            --radius-sm: 12px;
-            --radius-md: 20px;
-            --radius-lg: 32px;
-            --transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); /* Плавная анимация «выплывания» */
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PRINT POETRY — Концептуальный Бренд Одежды</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
 
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        html { scroll-behavior: smooth; }
-        
-        body { 
-            background: var(--bg-main); 
-            color: var(--text-dark); 
-            font-family: 'Inter', system-ui, sans-serif; 
-            font-weight: 300; 
-            line-height: 1.7; 
-            min-height: 100vh; 
-            display: flex; 
-            flex-direction: column;
-            -webkit-font-smoothing: antialiased;
-        }
+<style>
+/* ==========================================================================
+   НАСТРОЙКА ДИЗАЙНА (CSS ПЕРЕМЕННЫЕ)
+   Меняйте значения ниже, чтобы полностью изменить визуал сайта
+   ========================================================================== */
+:root {
+  /* Цвета фона */
+  --bg-deep: #070d0d;           /* Основной глубокий фон сайта */
+  --bg-darker: #0c1616;         /* Фон карточек, футера и блоков */
+  --bg-glass: rgba(15, 28, 28, 0.75); /* Полупрозрачный фон для эффекта стекла */
+  --border-glass: rgba(57, 230, 160, 0.15); /* Цвет тонких неоновых границ */
 
-        /* Применение шрифтов */
-        h1, h2, h3, h4, .logo, .brand-font { 
-            font-family: 'Playfair Display', Georgia, serif; 
-            font-weight: 400; 
-            letter-spacing: 0.02em; 
-        }
-        
-        button, .btn { 
-            font-family: 'Inter', sans-serif; 
-            font-weight: 400; 
-            letter-spacing: 0.05em; 
-            text-transform: uppercase;
-            font-size: 0.8rem;
-        }
+  /* Акцентные цвета */
+  --neon-yellow: #39e6a0;       /* Основной фирменный неоновый цвет (мятно-зеленый) */
+  --accent-orange: #e0a96d;     /* Цвет цен и важных акцентов (золотисто-оранжевый) */
+  --accent-gradient: linear-gradient(135deg, #39e6a0, #1b8a5a); /* Градиент для кнопок */
 
-        a { color: inherit; text-decoration: none; }
-        img { max-width: 100%; height: auto; display: block; }
-        button { border: none; background: none; cursor: pointer; }
-        input, textarea, select { font-family: inherit; }
-        :focus-visible { outline: 1px solid var(--accent-rose); outline-offset: 4px; }
+  /* Текст */
+  --text-white: #e6f2f2;        /* Основной контрастный текст */
+  --text-muted: #859999;        /* Второстепенный, приглушенный текст */
 
-        /* Сетка иレイアウト */
-        .container { max-width: 1200px; margin: 0 auto; padding: 0 2rem; width: 100%; }
-        .text-center { text-align: center; }
-        .mt-4 { margin-top: 3rem; }
-        .hidden { display: none !important; }
+  /* Радиусы скругления углов */
+  --radius-sm: 16px;            /* Скругление мелких элементов (кнопки, теги) */
+  --radius-md: 28px;            /* Скругление карточек товара */
+  --radius-lg: 42px;            /* Скругление больших баннеров */
 
-        /* Элегантная анимация появления контента */
-        .fade-section { opacity: 0; transform: translateY(30px); transition: var(--transition); }
-        .fade-section.visible { opacity: 1; transform: translateY(0); }
+  /* Анимации и переходы */
+  --transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  --transition-fast: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
 
-        @keyframes slideInRight { from { transform: translateX(30px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+/* ==========================================================================
+   БАЗОВЫЕ СТИЛИ И СБРОСЫ
+   ========================================================================== */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { 
+  background-color: var(--bg-deep); 
+  color: var(--text-white); 
+  font-family: 'Inter', sans-serif; 
+  font-weight: 300; 
+  line-height: 1.6; 
+  overflow-x: hidden;
+  display: flex; flex-direction: column; min-height: 100vh;
+}
 
-        /* Шапка сайта */
-        header { position: sticky; top: 0; z-index: 100; background: rgba(253, 248, 245, 0.85); backdrop-filter: blur(20px); border-bottom: var(--border-light); }
-        .header-container { display: flex; align-items: center; justify-content: space-between; height: 90px; }
-        .logo { font-size: 1.4rem; letter-spacing: 0.15em; color: var(--text-dark); text-transform: uppercase; }
-        .logo span { font-weight: 400; color: var(--text-soft); font-style: italic; font-family: 'Playfair Display', serif; text-transform: lowercase; letter-spacing: 0; }
-        
-        .nav-desktop { display: flex; align-items: center; gap: 3rem; }
-        .nav-desktop a { font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-soft); padding-bottom: 6px; border-bottom: 1px solid transparent; transition: var(--transition); }
-        .nav-desktop a:hover, .nav-desktop a.active { color: var(--text-dark); border-bottom-color: var(--text-dark); }
-        
-        .header-actions { display: flex; align-items: center; gap: 1.5rem; }
-        .cart-btn { position: relative; padding: 0.6rem; border-radius: 50%; transition: var(--transition); }
-        .cart-btn:hover { background: var(--soft-beige); }
-        .cart-btn svg { width: 22px; height: 22px; stroke: var(--text-dark); fill: none; stroke-width: 1.5; }
-        .cart-count { position: absolute; top: 0; right: 0; background: var(--text-dark); color: var(--milky); font-size: 0.65rem; font-weight: 500; width: 16px; height: 16px; border-radius: 50%; display: grid; place-items: center; }
-        
-        .burger { display: none; flex-direction: column; gap: 6px; padding: 0.5rem; z-index: 110; }
-        .burger span { display: block; width: 22px; height: 1.5px; background: var(--text-dark); transition: var(--transition); }
-        .burger.active span:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
-        .burger.active span:nth-child(2) { opacity: 0; }
-        .burger.active span:nth-child(3) { transform: rotate(-45deg) translate(5px, -5px); }
+::selection { background: var(--neon-yellow); color: var(--bg-deep); }
 
-        /* Мобильное меню */
-        .mobile-menu { position: fixed; inset: 0; background: var(--milky); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2.5rem; z-index: 90; opacity: 0; pointer-events: none; transition: var(--transition); }
-        .mobile-menu.open { opacity: 1; pointer-events: all; }
-        .mobile-menu a { font-family: 'Playfair Display', serif; font-size: 2rem; color: var(--text-soft); }
-        .mobile-menu a.active { color: var(--text-dark); font-style: italic; }
+/* Кастомизация скроллбара */
+::-webkit-scrollbar { width: 10px; }
+::-webkit-scrollbar-track { background: var(--bg-deep); }
+::-webkit-scrollbar-thumb { background: rgba(57, 230, 160, 0.2); border-radius: 20px; border: 2px solid var(--bg-deep); }
+::-webkit-scrollbar-thumb:hover { background: var(--neon-yellow); }
 
-        .page { display: none; flex: 1; padding: 3rem 0 5rem; animation: fadeIn 0.6s ease; }
-        .page.active { display: block; }
-        
-        h2 { font-size: 2.4rem; font-weight: 400; color: var(--text-dark); margin-bottom: 2.5rem; }
-        h2::after { content: ''; display: block; width: 40px; height: 1px; background: var(--text-dark); margin-top: 0.8rem; }
+/* Декоративные фоновые светящиеся сферы */
+.tech-glow-1, .tech-glow-2 {
+  position: fixed; border-radius: 50%; filter: blur(120px); z-index: 0; pointer-events: none; opacity: 0.25;
+}
+.tech-glow-1 {
+  width: 600px; height: 600px; background: radial-gradient(circle, rgba(57,230,160,0.3) 0%, rgba(0,0,0,0) 70%);
+  top: -10%; right: -5%; animation: floatGlow1 22s infinite alternate ease-in-out;
+}
+.tech-glow-2 {
+  width: 700px; height: 700px; background: radial-gradient(circle, rgba(147,51,234,0.25) 0%, rgba(0,0,0,0) 70%);
+  bottom: -15%; left: -10%; animation: floatGlow2 28s infinite alternate ease-in-out;
+}
 
-        /* Секция Hero — Минимализм и эстетика журнала */
-        .hero { background: linear-gradient(180deg, var(--soft-beige) 0%, rgba(253,248,245,0) 100%); padding: 6rem 2rem; text-align: center; margin-bottom: 4rem; }
-        .hero h1 { font-size: clamp(2.2rem, 6vw, 4rem); font-weight: 400; line-height: 1.2; margin-bottom: 1.5rem; color: var(--text-dark); }
-        .hero p { font-size: 1.15rem; color: var(--text-soft); max-width: 540px; margin: 0 auto 2.5rem; font-weight: 300; }
-        
-        .btn { display: inline-flex; align-items: center; gap: 0.7rem; background: transparent; border: 1px solid var(--text-dark); color: var(--text-dark); padding: 1rem 2.8rem; border-radius: 0; cursor: pointer; transition: var(--transition); }
-        .btn:hover { background: var(--text-dark); color: var(--milky); }
-        .btn-primary { background: var(--text-dark); color: var(--milky); }
-        .btn-primary:hover { background: rgba(42, 36, 33, 0.85); }
-        .btn:disabled { opacity: 0.4; cursor: not-allowed; }
+@keyframes floatGlow1 { 0% { transform: translate(0, 0) scale(1); } 100% { transform: translate(-100px, 70px) scale(1.3); background-color: rgba(27,138,90,0.25); } }
+@keyframes floatGlow2 { 0% { transform: translate(0, 0) scale(1); } 100% { transform: translate(120px, -80px) scale(0.95); } }
 
-        /* Фильтры и Поиск */
-        .filters { display: flex; flex-wrap: wrap; gap: 0.8rem; margin-bottom: 3rem; align-items: center; border-bottom: var(--border-light); padding-bottom: 1.5rem; }
-        .filter-btn { padding: 0.5rem 1.5rem; border-radius: 0; border: none; background: transparent; color: var(--text-soft); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.05em; cursor: pointer; transition: var(--transition); }
-        .filter-btn:hover, .filter-btn.active { color: var(--text-dark); font-weight: 400; }
-        .filter-btn.active { border-bottom: 1px solid var(--text-dark); }
-        
-        .search-box { margin-left: auto; position: relative; }
-        .search-box input { padding: 0.5rem 1rem 0.5rem 2.2rem; border-radius: 0; border: none; border-bottom: 1px solid rgba(110, 98, 94, 0.3); background: transparent; width: 200px; font-size: 0.9rem; transition: var(--transition); }
-        .search-box input:focus { border-bottom-color: var(--text-dark); outline: none; width: 250px; }
-        .search-box svg { position: absolute; left: 0.5rem; top: 50%; transform: translateY(-50%); width: 14px; height: 14px; stroke: var(--text-soft); fill: none; stroke-width: 2; }
+/* Сетка и глобальные утилиты */
+.container { max-width: 1340px; margin: 0 auto; padding: 0 2rem; width: 100%; position: relative; z-index: 1; }
+.hidden { display: none !important; }
+.text-center { text-align: center; }
+.mt-4 { margin-top: 3rem; }
 
-        /* Сетка товаров */
-        .catalog-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 3rem 2rem; }
-        .product-card { background: transparent; overflow: hidden; transition: var(--transition); display: flex; flex-direction: column; cursor: pointer; }
-        .card-img-wrap { position: relative; aspect-ratio: 3/4; overflow: hidden; background: var(--soft-beige); }
-        .card-img-wrap img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1); }
-        .product-card:hover .card-img-wrap img { transform: scale(1.04); }
-        .card-badge { position: absolute; top: 1rem; left: 1rem; background: var(--milky); padding: 0.3rem 0.8rem; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-dark); }
-        
-        .card-body { padding: 1.2rem 0 0; display: flex; flex-direction: column; flex: 1; }
-        .card-body h3 { font-size: 1.3rem; margin-bottom: 0.3rem; color: var(--text-dark); font-weight: 400; }
-        .card-desc { color: var(--text-soft); font-size: 0.9rem; margin-bottom: 1rem; flex: 1; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
-        .card-footer { display: flex; align-items: center; justify-content: space-between; margin-top: auto; padding-top: 0.5rem; }
-        .card-price { font-size: 1.1rem; font-family: 'Inter', sans-serif; font-weight: 400; color: var(--text-dark); }
-        
-        .add-to-cart { width: 36px; height: 36px; display: grid; place-items: center; transition: var(--transition); border-bottom: 1px solid transparent; }
-        .add-to-cart:hover { border-bottom-color: var(--text-dark); }
-        .add-to-cart svg { width: 16px; height: 16px; stroke: var(--text-dark); fill: none; stroke-width: 1.5; }
-        
-        .no-results { text-align: center; padding: 5rem 1rem; color: var(--text-soft); }
+/* Анимация появления блоков при скролле */
+.fade-section { opacity: 0; transform: translateY(30px); transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1); }
+.fade-section.visible { opacity: 1; transform: translateY(0); }
 
-        /* Кастомное модальное окно */
-        .modal-overlay { position: fixed; inset: 0; background: rgba(42, 36, 33, 0.3); backdrop-filter: blur(8px); z-index: 200; display: none; align-items: center; justify-content: center; padding: 1.5rem; opacity: 0; transition: var(--transition); }
-        .modal-overlay.open { display: flex; opacity: 1; }
-        .modal { background: var(--milky); max-width: 900px; width: 100%; max-height: 90vh; overflow-y: auto; position: relative; transform: translateY(20px); transition: var(--transition); }
-        .modal-overlay.open .modal { transform: translateY(0); }
-        .modal-close { position: absolute; top: 1.5rem; right: 1.5rem; width: 40px; height: 40px; background: transparent; z-index: 10; display: grid; place-items: center; transition: var(--transition); }
-        .modal-close svg { width: 20px; height: 20px; stroke: var(--text-dark); stroke-width: 1.5; }
-        
-        .modal-content { display: grid; grid-template-columns: 1.1fr 0.9fr; }
-        .modal-img { aspect-ratio: 3/4; background: var(--soft-beige); }
-        .modal-img img { width: 100%; height: 100%; object-fit: cover; }
-        
-        .modal-info { padding: 3.5rem 3rem; display: flex; flex-direction: column; }
-        .modal-info h3 { font-size: 1.8rem; margin-bottom: 0.8rem; }
-        .modal-info .price { font-size: 1.5rem; color: var(--text-dark); margin-bottom: 1.5rem; }
-        .modal-info .desc { color: var(--text-soft); margin-bottom: 2rem; font-size: 0.95rem; }
-        .modal-meta { font-size: 0.8rem; color: var(--text-soft); margin-bottom: 2rem; display: flex; flex-wrap: wrap; gap: 0.5rem; }
-        .modal-meta span { background: var(--soft-beige); padding: 0.3rem 0.8rem; }
-        
-        .modal-actions { margin-top: auto; display: flex; gap: 1rem; align-items: center; }
-        .qty-selector { display: flex; align-items: center; border: 1px solid var(--text-dark); height: 48px; }
-        .qty-selector button { width: 40px; height: 100%; font-size: 1rem; display: grid; place-items: center; }
-        .qty-selector span { width: 30px; text-align: center; font-size: 0.9rem; }
+/* ==========================================================================
+   ШАПКА САЙТА (HEADER)
+   ========================================================================== */
+header { 
+  position: sticky; top: 0; z-index: 100; background: rgba(7, 13, 13, 0.7); backdrop-filter: blur(30px); 
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05); transition: var(--transition);
+}
+header.scrolled { box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5); border-bottom-color: transparent; background: rgba(7, 13, 13, 0.85); }
+.header-container { display: flex; align-items: center; justify-content: space-between; height: 90px; }
 
-        /* Корзина */
-        .cart-layout { display: grid; grid-template-columns: 1fr 380px; gap: 4rem; align-items: start; }
-        .cart-items { display: flex; flex-direction: column; gap: 1.5rem; }
-        .cart-item { display: flex; gap: 2rem; padding: 1.5rem 0; border-bottom: var(--border-light); align-items: center; }
-        .cart-item img { width: 90px; height: 120px; object-fit: cover; }
-        .cart-item-info { flex: 1; }
-        .cart-item-info h4 { font-size: 1.2rem; margin-bottom: 0.3rem; }
-        .cart-item-info p { font-size: 0.85rem; color: var(--text-soft); }
-        .cart-item-qty { display: flex; align-items: center; gap: 0.8rem; border: 1px solid rgba(110, 98, 94, 0.3); padding: 0.2rem; }
-        .cart-item-qty button { width: 28px; height: 28px; font-size: 0.9rem; }
-        .cart-item-price { font-size: 1.05rem; min-width: 90px; text-align: right; }
-        .remove-item { color: var(--error); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.05em; cursor: pointer; margin-top: 0.6rem; display: inline-block; }
-        
-        .cart-summary { background: var(--milky); padding: 2.5rem; border: var(--border-light); position: sticky; top: 120px; }
-        .cart-summary h3 { font-size: 1.4rem; margin-bottom: 1.5rem; }
-        .summary-row { display: flex; justify-content: space-between; margin-bottom: 1rem; color: var(--text-soft); font-size: 0.95rem; }
-        .summary-row.total { font-size: 1.3rem; color: var(--text-dark); border-top: var(--border-light); padding-top: 1rem; margin-top: 1rem; }
-        .checkout-btn { width: 100%; margin-top: 1.5rem; height: 50px; justify-content: center; }
-        .empty-cart { text-align: center; padding: 6rem 1rem; }
-        .empty-cart svg { width: 48px; height: 48px; stroke: var(--accent-rose); margin: 0 auto 1.5rem; fill: none; stroke-width: 1; }
+.logo { font-family: 'Playfair Display', serif; font-size: 1.9rem; font-weight: 600; color: var(--text-white); text-decoration: none; transition: var(--transition); letter-spacing: 0.05em; }
+.logo:hover { transform: scale(1.02); text-shadow: 0 0 15px rgba(57, 230, 160, 0.4); }
+.logo span { color: var(--neon-yellow); font-style: italic; font-weight: 400; }
 
-        /* Формы оформления и контактов */
-        .checkout-form, .contact-form { background: var(--milky); padding: 2.5rem; border: var(--border-light); margin-top: 2rem; }
-        .payment-methods { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 1rem; margin-sizing: 1.5rem 0; }
-        .payment-method { padding: 1.2rem; border: 1px solid rgba(110, 98, 94, 0.2); cursor: pointer; text-align: center; transition: var(--transition); }
-        .payment-method.active { border-color: var(--text-dark); background: var(--soft-beige); }
+.nav-desktop { display: flex; align-items: center; gap: 0.5rem; background: rgba(255, 255, 255, 0.03); padding: 0.4rem; border-radius: 50px; border: 1px solid rgba(255,255,255,0.05); }
+.nav-desktop a { font-size: 0.95rem; color: var(--text-muted); padding: 0.6rem 1.6rem; border-radius: 50px; transition: var(--transition); text-decoration: none; font-weight: 500; }
+.nav-desktop a:hover, .nav-desktop a.active { color: var(--text-white); background: rgba(255,255,255,0.07); box-shadow: 0 8px 16px rgba(0,0,0,0.2); }
+.nav-desktop a.active { color: var(--neon-yellow); }
 
-        .about-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; }
-        .about-text .lead { font-size: 1.5rem; font-family: 'Playfair Display', serif; font-style: italic; color: var(--text-dark); margin-bottom: 2rem; line-height: 1.5; }
-        .about-text p { margin-bottom: 1.5rem; color: var(--text-soft); }
-        .about-img { aspect-ratio: 4/5; overflow: hidden; }
-        .about-img img { width: 100%; height: 100%; object-fit: cover; }
-        
-        .contact-section { margin-top: 5rem; display: grid; grid-template-columns: 0.8fr 1.2fr; gap: 4rem; }
-        .form-group { margin-bottom: 1.5rem; }
-        .form-group label { display: block; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-soft); margin-bottom: 0.5rem; }
-        .form-group input, .form-group textarea, .form-group select { width: 100%; padding: 0.8rem 0; background: transparent; border: none; border-bottom: 1px solid rgba(110, 98, 94, 0.3); font-size: 1rem; transition: var(--transition); border-radius: 0; }
-        .form-group input:focus, .form-group textarea:focus, .form-group select:focus { border-bottom-color: var(--text-dark); outline: none; }
-        
-        .submit-btn { width: 100%; padding: 1rem; background: var(--text-dark); color: var(--milky); text-transform: uppercase; letter-spacing: 0.1em; font-size: 0.8rem; cursor: pointer; transition: var(--transition); }
-        .submit-btn:hover { background: rgba(42, 36, 33, 0.9); }
-        .form-status { margin-top: 1rem; padding: 1rem; font-size: 0.9rem; }
-        .form-status.success { background: #eef5f0; color: var(--success); }
+.header-actions { display: flex; align-items: center; gap: 1.2rem; }
+.icon-btn { background: none; border: none; cursor: pointer; padding: 0.6rem; position: relative; border-radius: 50%; display: grid; place-items: center; transition: var(--transition); }
+.icon-btn svg { width: 23px; height: 23px; stroke: var(--text-white); fill: none; stroke-width: 1.8; transition: var(--transition); }
+.icon-btn:hover { background: rgba(255,255,255,0.05); }
+.icon-btn:hover svg { transform: scale(1.1); stroke: var(--neon-yellow); filter: drop-shadow(0 0 8px var(--neon-yellow)); }
+.cart-count { position: absolute; top: 0; right: 0; background: var(--accent-gradient); color: var(--bg-deep); font-size: 0.7rem; font-weight: 600; width: 18px; height: 18px; border-radius: 50%; display: grid; place-items: center; }
 
-        /* Уведомления (Тосты) */
-        .toast-container { position: fixed; bottom: 2rem; right: 2rem; z-index: 300; display: flex; flex-direction: column; gap: 0.8rem; }
-        .toast { background: var(--text-dark); color: var(--milky); padding: 1rem 2rem; font-size: 0.85rem; letter-spacing: 0.05em; animation: slideInRight 0.4s cubic-bezier(0.16, 1, 0.3, 1); display: flex; align-items: center; gap: 1rem; box-shadow: var(--shadow-card); }
+.login-btn { background: rgba(255,255,255,0.08); color: white; padding: 0.75rem 1.8rem; border-radius: 50px; font-weight: 500; font-size: 0.95rem; border: 1px solid rgba(255,255,255,0.1); cursor: pointer; transition: var(--transition); }
+.login-btn:hover { background: var(--neon-yellow); color: var(--bg-deep); transform: translateY(-2px); box-shadow: 0 8px 25px rgba(57, 230, 160, 0.3); border-color: transparent; }
 
-        /* Подвал */
-        footer { background: var(--milky); border-top: var(--border-light); padding: 4rem 0 3rem; margin-top: auto; font-size: 0.9rem; }
-        .footer-grid { display: grid; grid-template-columns: 1.5fr 1fr 1fr 1fr; gap: 3rem; }
-        .footer-brand .logo { margin-bottom: 1.5rem; display: inline-block; }
-        .footer-brand p { color: var(--text-soft); max-width: 240px; font-size: 0.85rem; }
-        .footer-col h4 { font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 1.5rem; color: var(--text-dark); }
-        .footer-col a { display: block; color: var(--text-soft); margin-bottom: 0.8rem; transition: var(--transition); font-size: 0.85rem; }
-        .footer-col a:hover { color: var(--text-dark); }
-        .footer-bottom { text-align: center; padding-top: 3rem; margin-top: 3rem; border-top: var(--border-light); color: var(--text-soft); font-size: 0.8rem; letter-spacing: 0.05em; }
+/* Бургер-меню */
+.burger { display: none; flex-direction: column; gap: 6px; cursor: pointer; border: none; background: none; padding: 0.5rem; }
+.burger span { display: block; width: 24px; height: 2px; background: var(--text-white); transition: var(--transition); border-radius: 2px; }
+.burger.active span:nth-child(1) { transform: rotate(45deg) translate(5px, 6px); background: var(--neon-yellow); }
+.burger.active span:nth-child(2) { opacity: 0; transform: translateX(-10px); }
+.burger.active span:nth-child(3) { transform: rotate(-45deg) translate(6px, -7px); background: var(--neon-yellow); }
 
-        /* Адаптивность */
-        @media(max-width: 1024px) { .cart-layout, .about-layout, .contact-section, .modal-content { grid-template-columns: 1fr; } .modal-info { padding: 2rem; } .footer-grid { grid-template-columns: 1fr 1fr; } .cart-summary { position: static; } }
-        @media(max-width: 768px) { .nav-desktop { display: none; } .burger { display: flex; } .search-box { margin-left: 0; width: 100%; margin-top: 1.5rem; } .search-box input { width: 100%; } .filters { flex-direction: column; align-items: flex-start; gap: 1rem; } .hero { padding: 4rem 1rem; } .catalog-grid { grid-template-columns: repeat(2, 1fr); gap: 1.5rem 1rem; } }
-        @media(max-width: 480px) { .catalog-grid { grid-template-columns: 1fr; } }
-    </style>
+.mobile-menu { position: fixed; inset: 0; background: var(--bg-deep); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2rem; z-index: 90; opacity: 0; pointer-events: none; transform: translateY(-20px); transition: var(--transition); }
+.mobile-menu.open { opacity: 0.98; pointer-events: all; transform: translateY(0); }
+.mobile-menu a { font-size: 2rem; color: var(--text-muted); text-decoration: none; font-family: 'Playfair Display', serif; transition: var(--transition); }
+.mobile-menu a:hover, .mobile-menu a.active { color: var(--neon-yellow); transform: scale(1.05); }
+
+/* Шаблоны страниц */
+.page { display: none; flex: 1; padding: 3rem 0 6rem; }
+.page.active { display: block; }
+
+h2 { font-family: 'Playfair Display', serif; font-size: 3.2rem; font-weight: 400; margin-bottom: 2.5rem; color: var(--text-white); letter-spacing: 0.02em; }
+h2 span { color: var(--neon-yellow); font-style: italic; text-shadow: 0 0 20px rgba(57, 230, 160, 0.2); }
+
+/* ==========================================================================
+   ГЛАВНАЯ СТРАНИЦА (HERO BANNER)
+   ========================================================================== */
+.hero-wrapper { display: grid; grid-template-columns: 1.2fr 1fr; gap: 4rem; align-items: center; min-height: calc(100vh - 180px); margin-bottom: 6rem; }
+.hero-text h1 { font-family: 'Playfair Display', serif; font-size: clamp(3rem, 5.5vw, 5.2rem); line-height: 1.1; font-weight: 400; color: var(--text-white); margin-bottom: 2rem; }
+.hero-text h1 span { color: var(--neon-yellow); font-style: italic; text-shadow: 0 0 30px rgba(57, 230, 160, 0.25); }
+.hero-text p { color: var(--text-muted); font-size: 1.2rem; max-width: 540px; margin-bottom: 3.5rem; }
+
+.action-trigger { display: flex; align-items: center; gap: 1.5rem; cursor: pointer; background: none; border: none; text-align: left; }
+.circle-btn { width: 84px; height: 84px; border-radius: 50%; background: var(--accent-gradient); display: grid; place-items: center; transition: var(--transition); position: relative; }
+.circle-btn::before { content: ''; position: absolute; inset: -6px; border: 1px solid var(--neon-yellow); border-radius: 50%; opacity: 0.4; animation: pulseRing 2s infinite cubic-bezier(0.215, 0.610, 0.355, 1); }
+@keyframes pulseRing { 0% { transform: scale(0.95); opacity: 0.6; } 100% { transform: scale(1.3); opacity: 0; } }
+.circle-btn svg { width: 28px; height: 28px; fill: none; stroke: var(--bg-deep); stroke-width: 2; transition: var(--transition); }
+.action-trigger:hover .circle-btn { transform: scale(1.05); box-shadow: 0 0 30px rgba(57, 230, 160, 0.5); }
+.action-text { font-size: 1.1rem; font-weight: 500; color: var(--text-white); line-height: 1.4; transition: var(--transition); }
+.action-trigger:hover .action-text { color: var(--neon-yellow); }
+
+.hero-visual { position: relative; display: flex; justify-content: center; }
+.main-hero-img { width: 100%; max-width: 460px; aspect-ratio: 4/5; object-fit: cover; border-radius: var(--radius-lg); box-shadow: 0 30px 60px rgba(0,0,0,0.6); border: 1px solid rgba(255,255,255,0.05); filter: brightness(0.85) contrast(1.1); transition: var(--transition); }
+.floating-card { position: absolute; bottom: -20px; left: -20px; background: rgba(12, 22, 22, 0.85); backdrop-filter: blur(15px); border: 1px solid var(--border-glass); padding: 1.5rem; border-radius: var(--radius-md); width: 260px; box-shadow: 0 30px 60px rgba(0,0,0,0.5); animation: float 4s ease-in-out infinite; }
+@keyframes float { 0%, 100% { transform: translateY(0) rotate(0deg); } 50% { transform: translateY(-15px) rotate(1deg); } }
+.floating-card img { width: 100%; aspect-ratio: 1; object-fit: cover; border-radius: var(--radius-sm); margin-bottom: 1rem; border: 1px solid rgba(255,255,255,0.05); }
+.floating-card h4 { font-size: 1.1rem; font-weight: 500; margin-bottom: 0.3rem; color: var(--text-white); }
+.floating-card .meta { display: flex; justify-content: space-between; align-items: center; color: var(--text-muted); font-size: 0.9rem; }
+.badge-tech { background: rgba(57, 230, 160, 0.1); color: var(--neon-yellow); padding: 0.25rem 0.75rem; font-size: 0.75rem; font-weight: 600; border-radius: 50px; border: 1px solid rgba(57, 230, 160, 0.2); }
+
+/* ==========================================================================
+   КАТАЛОГ И КАРТОЧКИ (CATALOG & CARDS)
+   ========================================================================== */
+.controls-row { display: flex; flex-wrap: wrap; gap: 1.5rem; justify-content: space-between; align-items: center; margin-bottom: 3.5rem; }
+.filters { display: flex; flex-wrap: wrap; gap: 0.4rem; background: var(--bg-darker); padding: 0.4rem; border-radius: 50px; border: 1px solid rgba(255,255,255,0.05); }
+.filter-btn { background: none; border: none; color: var(--text-muted); padding: 0.65rem 1.6rem; border-radius: 50px; font-size: 0.95rem; cursor: pointer; transition: var(--transition); font-weight: 500; }
+.filter-btn.active { color: var(--bg-deep); background: var(--neon-yellow); box-shadow: 0 0 15px rgba(57,230,160,0.3); font-weight: 600; }
+
+.search-box { position: relative; }
+.search-box input { background: var(--bg-darker); border: 1px solid rgba(255,255,255,0.08); color: var(--text-white); padding: 0.85rem 1.5rem 0.85rem 3.2rem; border-radius: 50px; width: 280px; font-size: 0.95rem; box-shadow: 0 4px 15px rgba(0,0,0,0.3); transition: var(--transition); }
+.search-box input:focus { border-color: var(--neon-yellow); outline: none; width: 350px; box-shadow: 0 0 20px rgba(57,230,160,0.15); }
+.search-box svg { position: absolute; left: 1.3rem; top: 50%; transform: translateY(-50%); width: 18px; height: 18px; stroke: var(--text-muted); fill: none; stroke-width: 2; transition: var(--transition); }
+
+.catalog-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(295px, 1fr)); gap: 2.5rem; }
+.product-card { background: var(--bg-glass); border: 1px solid var(--border-glass); border-radius: var(--radius-md); overflow: hidden; display: flex; flex-direction: column; backdrop-filter: blur(10px); transition: var(--transition); cursor: pointer; position: relative; box-shadow: 0 10px 30px rgba(0,0,0,0.4); }
+.product-card:hover { transform: translateY(-8px) scale(1.01); border-color: rgba(57, 230, 160, 0.4); box-shadow: 0 20px 40px rgba(57, 230, 160, 0.12); }
+.card-img-wrap { position: relative; aspect-ratio: 1; overflow: hidden; background: #040808; border-bottom: 1px solid rgba(255,255,255,0.03); }
+.card-img-wrap img { width: 100%; height: 100%; object-fit: cover; filter: brightness(0.85); transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1), filter 0.5s ease; }
+.product-card:hover .card-img-wrap img { transform: scale(1.05); filter: brightness(1); }
+.card-body { padding: 1.6rem; display: flex; flex-direction: column; flex: 1; }
+.card-body h3 { font-family: 'Playfair Display', serif; font-size: 1.45rem; margin-bottom: 0.5rem; font-weight: 400; color: var(--text-white); transition: var(--transition); }
+.product-card:hover .card-body h3 { color: var(--neon-yellow); text-shadow: 0 0 10px rgba(57, 230, 160, 0.2); }
+.card-desc { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1.5rem; flex: 1; line-height: 1.5; }
+.card-footer { display: flex; align-items: center; justify-content: space-between; }
+.card-price { font-size: 1.3rem; font-weight: 600; color: var(--accent-orange); }
+
+.add-to-cart-btn { width: 50px; height: 50px; border-radius: 50%; background: rgba(255,255,255,0.04); display: grid; place-items: center; transition: var(--transition); border: 1px solid rgba(255,255,255,0.08); }
+.add-to-cart-btn svg { width: 20px; height: 20px; stroke: var(--text-white); fill: none; stroke-width: 2; transition: var(--transition); }
+.add-to-cart-btn:hover { background: var(--accent-gradient); border-color: transparent; transform: scale(1.05) rotate(90deg); box-shadow: 0 0 15px rgba(57, 230, 160, 0.5); }
+.add-to-cart-btn:hover svg { stroke: var(--bg-deep); }
+
+/* ==========================================================================
+   МОДАЛЬНЫЕ ОКНА И ФОРМЫ (MODALS & FORMS)
+   ========================================================================== */
+.modal-overlay { position: fixed; inset: 0; background: rgba(4, 8, 8, 0.6); z-index: 200; display: none; align-items: center; justify-content: center; padding: 2rem; backdrop-filter: blur(20px); opacity: 0; transition: opacity 0.4s ease; }
+.modal-overlay.open { display: flex; opacity: 1; }
+.modal { background: var(--bg-darker); border: 1px solid rgba(255,255,255,0.08); border-radius: var(--radius-lg); max-width: 920px; width: 100%; overflow: hidden; position: relative; color: var(--text-white); transform: translateY(20px) scale(0.98); transition: var(--transition); box-shadow: 0 50px 100px rgba(0,0,0,0.8); }
+.modal-overlay.open .modal { transform: translateY(0) scale(1); }
+.modal-close { position: absolute; top: 1.5rem; right: 1.5rem; width: 44px; height: 44px; border-radius: 50%; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); display: grid; place-items: center; cursor: pointer; z-index: 10; color: var(--text-white); transition: var(--transition); }
+.modal-close:hover { background: var(--neon-yellow); color: var(--bg-deep); transform: rotate(90deg); border-color: transparent; }
+.modal-content { display: grid; grid-template-columns: 1fr 1.1fr; }
+.modal-img { aspect-ratio: 1; background: #000; overflow: hidden; }
+.modal-img img { width: 100%; height: 100%; object-fit: cover; filter: brightness(0.9); }
+.modal-info { padding: 3.5rem; display: flex; flex-direction: column; justify-content: center; }
+.modal-info h3 { font-family: 'Playfair Display', serif; font-size: 2.2rem; margin-bottom: 0.6rem; font-weight: 400; }
+.modal-info .price { font-size: 1.8rem; color: var(--accent-orange); font-weight: 600; margin-bottom: 1.5rem; }
+.modal-info .desc { color: var(--text-muted); margin-bottom: 2rem; font-size: 1rem; line-height: 1.6; }
+.modal-actions { display: flex; gap: 1rem; align-items: center; }
+
+.qty-selector { display: flex; align-items: center; background: rgba(0,0,0,0.2); border-radius: 50px; border: 1px solid rgba(255,255,255,0.08); overflow: hidden; padding: 0.1rem; }
+.qty-selector button { width: 44px; height: 44px; background: none; border: none; color: var(--text-white); font-size: 1.2rem; cursor: pointer; transition: var(--transition); }
+.qty-selector button:hover { color: var(--neon-yellow); background: rgba(255,255,255,0.02); }
+.qty-selector span { width: 42px; text-align: center; font-weight: 600; }
+
+.btn-tech { background: var(--accent-gradient); color: var(--bg-deep); padding: 1rem 2.6rem; border-radius: 50px; font-size: 1rem; font-weight: 600; border: none; cursor: pointer; display: inline-flex; align-items: center; gap: 0.8rem; transition: var(--transition); }
+.btn-tech:hover { transform: translateY(-3px); box-shadow: 0 0 25px rgba(57, 230, 160, 0.45); }
+.btn-tech:disabled { opacity: 0.3; cursor: not-allowed; transform: none !important; box-shadow: none !important; }
+.btn-border { background: none; border: 1px solid rgba(255,255,255,0.15); color: var(--text-white); padding: 1rem 2.5rem; border-radius: 50px; font-size: 1rem; font-weight: 500; cursor: pointer; transition: var(--transition); }
+.btn-border:hover { background: rgba(255,255,255,0.05); border-color: var(--neon-yellow); transform: translateY(-2px); color: var(--neon-yellow); }
+
+.privacy-agreement { display: flex; align-items: flex-start; gap: 0.8rem; margin: 1.5rem 0; text-align: left; cursor: pointer; }
+.privacy-agreement input { width: auto; margin-top: 4px; cursor: pointer; accent-color: var(--neon-yellow); }
+.privacy-agreement span { font-size: 0.85rem; color: var(--text-muted); line-height: 1.4; }
+.privacy-agreement a { color: var(--neon-yellow); text-decoration: none; border-bottom: 1px dashed var(--neon-yellow); transition: var(--transition); }
+.privacy-agreement a:hover { color: var(--text-white); border-bottom-color: var(--text-white); }
+
+/* ==========================================================================
+   КОРЗИНА (CART STYLES)
+   ========================================================================== */
+.cart-layout { display: grid; grid-template-columns: 1fr 420px; gap: 3rem; align-items: start; }
+.cart-items-wrapper { display: flex; flex-direction: column; gap: 1.5rem; }
+.cart-item { 
+  display: flex; gap: 1.5rem; align-items: center; background: var(--bg-glass); 
+  border: 1px solid var(--border-glass); padding: 1.5rem; border-radius: var(--radius-md); 
+  box-shadow: 0 10px 30px rgba(0,0,0,0.3); backdrop-filter: blur(10px); transition: var(--transition);
+}
+.cart-item:hover { border-color: rgba(57, 230, 160, 0.3); box-shadow: 0 15px 40px rgba(57, 230, 160, 0.1); }
+.cart-item.removing { animation: fadeOutForest 0.5s ease-out forwards !important; pointer-events: none; }
+
+@keyframes fadeOutForest {
+  0% { transform: translateX(0) scale(1); opacity: 1; filter: blur(0); }
+  100% { transform: translateX(-100px) scale(0.9) rotate(-2deg); opacity: 0; filter: blur(10px); visibility: hidden; }
+}
+
+.cart-item img { width: 100px; height: 100px; object-fit: cover; border-radius: var(--radius-sm); border: 1px solid rgba(255,255,255,0.05); }
+.cart-item-info { flex: 1; display: flex; flex-direction: column; gap: 0.3rem; }
+.cart-item-info h4 { font-family: 'Playfair Display', serif; font-size: 1.35rem; font-weight: 400; color: var(--text-white); }
+.cart-item-qty { display: flex; align-items: center; background: rgba(0,0,0,0.2); border-radius: 50px; border: 1px solid rgba(255,255,255,0.08); overflow: hidden; width: max-content; margin-top: 0.5rem; }
+.cart-item-qty button { width: 32px; height: 32px; background: none; border: none; color: var(--text-white); font-size: 1rem; cursor: pointer; }
+.cart-item-qty button:hover { color: var(--neon-yellow); }
+.cart-item-qty span { width: 30px; text-align: center; font-size: 0.9rem; font-weight: 600; }
+.remove-item { color: var(--accent-orange); font-size: 0.85rem; cursor: pointer; font-weight: 500; margin-top: 0.4rem; width: max-content; }
+.cart-item-price { font-size: 1.4rem; font-weight: 600; color: var(--neon-yellow); text-align: right; margin-left: auto; }
+
+.cart-summary { background: var(--bg-darker); border: 1px solid rgba(255,255,255,0.08); border-radius: var(--radius-md); padding: 2.5rem; position: sticky; top: 130px; box-shadow: 0 20px 50px rgba(0,0,0,0.6); }
+.cart-summary h3 { font-family: 'Playfair Display', serif; font-size: 1.7rem; margin-bottom: 1.8rem; text-align: center; font-weight: 400; }
+.summary-row { display: flex; justify-content: space-between; margin-bottom: 1.2rem; color: var(--text-muted); font-size: 0.95rem; }
+.summary-row.total { font-size: 1.5rem; color: var(--text-white); border-top: 1px solid rgba(255,255,255,0.08); padding-top: 1.5rem; margin-top: 1.5rem; }
+.summary-row.total span:last-child { color: var(--neon-yellow); font-weight: 600; }
+
+/* Оформление заказа */
+.checkout-form h3 { font-family: 'Playfair Display', serif; font-size: 2.2rem; margin-bottom: 2.5rem; text-align: center; }
+.form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.8rem; }
+.form-group { animation: fadeInStep 0.4s ease-out forwards; }
+@keyframes fadeInStep { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+
+.form-group label { display: block; font-size: 0.8rem; color: var(--text-muted); margin-bottom: 0.7rem; text-transform: uppercase; letter-spacing: 0.08em; }
+.form-group input, .form-group textarea { width: 100%; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.08); color: var(--text-white); padding: 1.1rem 1.6rem; border-radius: 16px; font-size: 1rem; }
+.form-group input:focus, .form-group textarea:focus { border-color: var(--neon-yellow); outline: none; }
+
+.payment-methods { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-top: 0.8rem; }
+.payment-method { background: rgba(0,0,0,0.2); border: 1px solid rgba(255,255,255,0.05); padding: 1.4rem; border-radius: 16px; cursor: pointer; text-align: center; display: flex; flex-direction: column; gap: 0.3rem; }
+.payment-method.active { border-color: var(--neon-yellow); background: var(--bg-darker); }
+.payment-method div:first-child { font-weight: 600; font-size: 1.1rem; }
+.payment-method div:last-child { font-size: 0.8rem; color: var(--text-muted); }
+
+.checkout-actions { margin-top: 3rem; display: flex; gap: 1.2rem; justify-content: center; }
+
+/* Кастомные чекбоксы */
+.privacy-agreement input[type="checkbox"] { appearance: none; background-color: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.1); width: 18px; height: 18px; border-radius: 4px; display: grid; place-items: center; }
+.privacy-agreement input[type="checkbox"]:checked { background-color: var(--neon-yellow); border-color: var(--neon-yellow); }
+.privacy-agreement input[type="checkbox"]::after { content: '✓'; font-size: 12px; color: var(--bg-deep); font-weight: 700; transform: scale(0); }
+.privacy-agreement input[type="checkbox"]:checked::after { transform: scale(1); }
+
+/* ==========================================================================
+   О СТРАНИЦАХ: СТРАНИЦА "О БРЕНДЕ" И "ПОЛИТИКА"
+   ========================================================================== */
+.about-layout { display: grid; grid-template-columns: 1.1fr 1fr; gap: 5rem; align-items: center; margin-bottom: 6rem; }
+.about-text .lead { font-family: 'Playfair Display', serif; font-size: 2rem; font-style: italic; color: var(--accent-orange); margin-bottom: 2.5rem; }
+.about-img { width: 100%; border-radius: var(--radius-lg); box-shadow: 0 25px 50px rgba(0,0,0,0.5); }
+
+.privacy-card { background: var(--bg-glass); border: 1px solid var(--border-glass); border-radius: var(--radius-md); padding: 4rem; max-width: 900px; margin: 0 auto; backdrop-filter: blur(15px); }
+.privacy-meta { color: var(--accent-orange); font-weight: 500; margin-bottom: 2rem; font-size: 0.95rem; }
+.privacy-content h3 { font-family: 'Playfair Display', serif; font-size: 1.6rem; margin: 2.5rem 0 1rem; border-left: 3px solid var(--neon-yellow); padding-left: 1rem; font-weight: 400; }
+.privacy-content p { color: var(--text-muted); margin-bottom: 1.2rem; }
+
+/* Уведомления (Toasts) */
+.toast-container { position: fixed; bottom: 2rem; right: 2rem; z-index: 300; display: flex; flex-direction: column; gap: 0.8rem; }
+.toast { background: var(--bg-darker); border: 1px solid rgba(255,255,255,0.08); border-left: 4px solid var(--neon-yellow); color: var(--text-white); padding: 1.3rem 2.2rem; border-radius: 20px; box-shadow: 0 25px 50px rgba(0,0,0,0.6); display: flex; align-items: center; gap: 1.2rem; min-width: 320px; font-weight: 500; animation: slideIn 0.5s ease; transition: opacity 0.4s; }
+@keyframes slideIn { from { transform: translateX(50px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+
+/* ==========================================================================
+   ПОДВАЛ САЙТА (FOOTER)
+   ========================================================================== */
+footer { background: #040808; border-top: 1px solid rgba(255,255,255,0.05); padding: 5rem 0 3rem; margin-top: auto; position: relative; z-index: 1; }
+.footer-grid { display: grid; grid-template-columns: 1.5fr 1fr 1fr; gap: 4rem; margin-bottom: 4rem; }
+.footer-brand p { color: var(--text-muted); font-size: 0.95rem; max-width: 320px; }
+.footer-col h4 { font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 1.5rem; font-weight: 600; }
+.footer-col a { display: block; color: var(--text-muted); text-decoration: none; margin-bottom: 0.9rem; font-size: 0.95rem; transition: var(--transition); }
+.footer-col a:hover { color: var(--neon-yellow); transform: translateX(6px); }
+.footer-bottom { display: flex; justify-content: space-between; align-items: center; border-top: 1px solid rgba(255,255,255,0.03); padding-top: 2rem; color: var(--text-muted); font-size: 0.9rem; flex-wrap: wrap; gap: 1rem; }
+
+/* Адаптивность (Media Queries) */
+@media(max-width: 1024px) { .hero-wrapper, .about-layout, .cart-layout { grid-template-columns: 1fr; gap: 4rem; } .hero-visual { order: -1; } .floating-card { left: 50%; transform: translateX(-50%); bottom: -20px; } .modal-content { grid-template-columns: 1fr; } .footer-grid { grid-template-columns: 1fr 1fr; } .cart-summary { position: static; width: 100%; } }
+@media(max-width: 768px) { .nav-desktop { display: none; } .burger { display: flex; } .controls-row { flex-direction: column; align-items: stretch; gap: 2rem; } .filters { justify-content: center; border-radius: 24px; } .search-box input { width: 100%; } .footer-grid { grid-template-columns: 1fr; gap: 3rem; } h2 { font-size: 2.5rem; } .privacy-card { padding: 2rem; } .form-grid, .payment-methods { grid-template-columns: 1fr; } .checkout-actions { flex-direction: column; } .checkout-actions button { width: 100%; } }
+</style>
 </head>
 <body>
 
-<header role="banner">
-    <div class="container header-container">
-        <a href="#home" class="logo" data-page="home">PRINT <span>poetry</span></a>
-        <nav class="nav-desktop" role="navigation">
-            <a href="#home" data-page="home" class="active">Главная</a>
-            <a href="#catalog" data-page="catalog">Каталог</a>
-            <a href="#about" data-page="about">О бренде</a>
-        </nav>
-        <div class="header-actions">
-            <button class="cart-btn" data-page="cart" aria-label="Корзина">
-                <svg viewBox="0 0 24 24"><path d="M6 6h15l-1.5 9h-12z"/><circle cx="9" cy="20" r="1.5"/><circle cx="18" cy="20" r="1.5"/><path d="M6 6L5 3H2"/></svg>
-                <span class="cart-count hidden" id="cartCount">0</span>
-            </button>
-            <button class="burger" id="burger" aria-label="Открыть меню">
-                <span></span><span></span><span></span>
-            </button>
-        </div>
+<div class="tech-glow-1"></div>
+<div class="tech-glow-2"></div>
+
+<header id="header">
+  <div class="container header-container">
+    <a href="#home" class="logo" data-page="home">PRINT <span>POETRY</span></a>
+    <nav class="nav-desktop">
+      <a href="#home" data-page="home" class="active">Главная</a>
+      <a href="#catalog" data-page="catalog">Каталог</a>
+      <a href="#about" data-page="about">О бренде</a>
+    </nav>
+    <div class="header-actions">
+      <button class="icon-btn" data-page="cart" aria-label="Корзина">
+        <svg viewBox="0 0 24 24"><path d="M6 6h15l-1.5 9h-12z"/><circle cx="9" cy="20" r="1.5"/><circle cx="18" cy="20" r="1.5"/><path d="M6 6L5 3H2"/></svg>
+        <span class="cart-count hidden" id="cartCount">0</span>
+      </button>
+      <button class="login-btn" id="cabinetBtn">Личный кабинет</button>
+      <button class="burger" id="burger" aria-label="Меню"><span></span><span></span><span></span></button>
     </div>
+  </div>
 </header>
 
 <div class="mobile-menu" id="mobileMenu">
-    <a href="#home" data-page="home">Главная</a>
-    <a href="#catalog" data-page="catalog">Каталог</a>
-    <a href="#about" data-page="about">О бренде</a>
-    <a href="#cart" data-page="cart">Корзина <span id="mobileCartCount"></span></a>
+  <a href="#home" data-page="home">Главная</a>
+  <a href="#catalog" data-page="catalog">Каталог</a>
+  <a href="#about" data-page="about">О бренде</a>
+  <a href="#cart" data-page="cart">Корзина <span id="mobileCartCount"></span></a>
 </div>
 
 <main>
-    <div id="home" class="page active">
-        <div class="container">
-            <section class="hero fade-section">
-                <h1>Авторские принты:<br>Искусство на ткани</h1>
-                <p>Нежные образы, рождённые в акварели и цифровой графике. Носимая эстетика для повседневной поэзии.</p>
-                <button class="btn btn-primary" data-nav="catalog">Смотреть каталог</button>
-            </section>
-            <section class="fade-section">
-                <h2>Избранные работы</h2>
-                <div class="catalog-grid" id="featuredGrid"></div>
-                <div class="text-center mt-4"><button class="btn" data-nav="catalog">Все изделия</button></div>
-            </section>
-            <section class="fade-section mt-4" style="margin-top:6rem">
-                <h2>Философия бренда</h2>
-                <div class="about-layout">
-                    <div class="about-text">
-                        <p class="lead">Каждый принт — как набросок из личного дневника: акварельные разводы, пастельная дымка и чистая любовь к деталям.</p>
-                        <p>Все изделия создаются ограниченными тиражами. Мы используем натуральный хлопок высшего качества и экологичные краски на водной основе, чтобы сохранить мягкость ткани и глубину цвета.</p>
-                    </div>
-                    <div class="about-img"><img src="https://images.unsplash.com/photo-1558618666-fcd25c85f82e?w=800&h=1000&fit=crop" alt="Мастерская" loading="lazy"></div>
-                </div>
-            </section>
+  <div id="home" class="page active">
+    <div class="container">
+      <section class="hero-wrapper fade-section">
+        <div class="hero-text">
+          <h1>Поэзия геометрии:<br><span>Одежда как манифест</span></h1>
+          <p>Слияние выверенных силуэтов, концептуальной графики и технологичных акцентов. Лимитированные дропы, разработанные для тех, кто ценит эстетику урбанизма и безупречный крой.</p>
+          <button class="action-trigger" data-nav="catalog">
+            <div class="circle-btn"><svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
+            <div class="action-text">Смотреть<br>Новую Коллекцию</div>
+          </button>
         </div>
-    </div>
-
-    <div id="catalog" class="page">
-        <div class="container">
-            <h2 class="fade-section">Каталог</h2>
-            <div class="filters fade-section">
-                <button class="filter-btn active" data-filter="all">Все коллекции</button>
-                <button class="filter-btn" data-filter="tshirt">Футболки</button>
-                <button class="filter-btn" data-filter="bag">Сумки</button>
-                <button class="filter-btn" data-filter="accessory">Аксессуары</button>
-                <div class="search-box">
-                    <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
-                    <input type="search" id="searchInput" placeholder="Поиск изделий...">
-                </div>
-            </div>
-            <div class="catalog-grid" id="catalogGrid"></div>
-            <div class="no-results hidden" id="noResults">
-                <h3>Ничего не найдено</h3>
-                <p>Попробуйте изменить параметры поиска или ключевые слова.</p>
-                <button class="btn mt-4" onclick="resetFilters()">Сбросить фильтры</button>
-            </div>
+        <div class="hero-visual">
+          <img src="https://images.unsplash.com/photo-1502082553048-f009c37129b9?w=800&fit=crop" class="main-hero-img" alt="Новая Коллекция Одежды">
+          <div class="floating-card">
+            <img src="https://images.unsplash.com/photo-1518818419601-72c8673f5852?w=400&fit=crop" alt="Item">
+            <h4>Концептуальный Худи</h4>
+            <div class="meta"><span>Лимитированная серия</span><span class="badge-tech">Premium</span></div>
+          </div>
         </div>
-    </div>
+      </section>
 
-    <div id="about" class="page">
-        <div class="container">
-            <h2 class="fade-section">История мастера</h2>
-            <div class="about-layout fade-section">
-                <div class="about-text">
-                    <p class="lead">Меня зовут Максим. Я художник-иллюстратор и создатель концептуального бренда PRINT POETRY.</p>
-                    <p>Мои принты рождаются на стыке классических художественных техник — традиционной акварели, туши — и современных методов цифровой обработки графики.</p>
-                    <p>Каждая вещь в каталоге отражает моё восхищение природой, тишиной и визуальной поэзией, которую можно встретить в самых простых повседневных вещах.</p>
-                </div>
-                <div class="about-img"><img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&h=1000&fit=crop" alt="Максим" loading="lazy"></div>
-            </div>
-            <div class="contact-section fade-section">
-                <div class="contact-info">
-                    <h3 style="margin-bottom: 1.5rem;">Контакты</h3>
-                    <p style="margin-bottom: 1rem;">✉ <a href="mailto:print.poetry@art.me" style="border-bottom: 1px solid var(--text-dark);">print.poetry@art.me</a></p>
-                    <p>📍 Сальск · Бережная доставка по всей России</p>
-                </div>
-                <div class="contact-form">
-                    <h3 style="margin-bottom:2rem; font-weight: 400;">Написать в мастерскую</h3>
-                    <form id="contactForm" action="https://formspree.io/f/YOUR_FORM_ID" method="POST" novalidate>
-                        <div class="form-group"><label>Ваше имя *</label><input type="text" id="name" name="name" required placeholder="Александр"></div>
-                        <div class="form-group"><label>Email *</label><input type="email" id="email" name="email" required placeholder="alex@example.com"></div>
-                        <div class="form-group"><label>Сообщение</label><textarea id="message" name="message" rows="3" placeholder="Ваш вопрос или пожелание..."></textarea></div>
-                        <button type="submit" class="submit-btn" id="submitBtn">Отправить сообщение</button>
-                        <div class="form-status" id="formStatus"></div>
-                    </form>
-                </div>
-            </div>
+      <section class="fade-section">
+        <h2>Новые <span>Поступления</span></h2>
+        <div class="catalog-grid" id="featuredGrid"></div>
+        <div class="text-center mt-4">
+          <button class="btn-border" data-nav="catalog">Перейти в полный каталог</button>
         </div>
+      </section>
     </div>
+  </div>
 
-    <div id="cart" class="page">
-        <div class="container">
-            <h2 class="fade-section">Ваш заказ</h2>
-            <div class="cart-layout fade-section">
-                <div class="cart-items" id="cartItems"></div>
-                <div class="cart-summary" id="cartSummary">
-                    <h3>Резюме</h3>
-                    <div class="summary-row"><span>Выбрано товаров</span><span id="summaryItems">0 шт</span></div>
-                    <div class="summary-row"><span>Доставка</span><span id="summaryDelivery">300 ₽</span></div>
-                    <div class="summary-row total"><span>Итого к оплате</span><span id="summaryTotal">0 ₽</span></div>
-                    <button class="btn btn-primary checkout-btn" id="checkoutBtn" disabled onclick="showCheckout()">Оформить заказ</button>
-                </div>
-            </div>
-            <div class="empty-cart hidden" id="emptyCart">
-                <svg viewBox="0 0 24 24"><path d="M6 6h15l-1.5 9h-12z"/><circle cx="9" cy="20" r="1.5"/><circle cx="18" cy="20" r="1.5"/><path d="M6 6L5 3H2"/></svg>
-                <h3 style="margin-bottom: 0.5rem;">В корзине пока пусто</h3>
-                <p style="color: var(--text-soft); margin-bottom: 2rem;">Перейдите в каталог, чтобы выбрать уникальные принты.</p>
-                <button class="btn btn-primary" data-nav="catalog">Открыть каталог</button>
-            </div>
-
-            <div class="checkout-form hidden" id="checkoutForm">
-                <h3 style="margin-bottom: 2rem;">Данные получателя</h3>
-                <div class="form-group"><label>Имя и фамилия *</label><input type="text" id="coName" required></div>
-                <div class="form-group"><label>Email *</label><input type="email" id="coEmail" required></div>
-                <div class="form-group"><label>Телефон</label><input type="tel" id="coPhone"></div>
-                <div class="form-group"><label>Адрес доставки</label><textarea id="coAddress" rows="2"></textarea></div>
-                <div class="form-group">
-                    <label style="margin-bottom: 1rem;">Способ оплаты</label>
-                    <div class="payment-methods">
-                        <div class="payment-method active" data-method="yookassa"><div style="font-weight:400; font-size: 0.95rem;">ЮKassa</div><div style="font-size:0.75rem;color:var(--text-soft);margin-top:0.3rem;">Карты РФ, СБП</div></div>
-                        <div class="payment-method" data-method="stripe"><div style="font-weight:400; font-size: 0.95rem;">Stripe</div><div style="font-size:0.75rem;color:var(--text-soft);margin-top:0.3rem;">International Cards</div></div>
-                        <div class="payment-method" data-method="cod"><div style="font-weight:400; font-size: 0.95rem;">При получении</div><div style="font-size:0.75rem;color:var(--text-soft);margin-top:0.3rem;">Наличный расчет</div></div>
-                    </div>
-                </div>
-                <button class="btn btn-primary" id="placeOrderBtn" onclick="placeOrder()" style="height: 50px; width: 100%; justify-content: center;">Подтвердить и оплатить</button>
-                <button class="btn" style="margin-top:1rem; width: 100%; justify-content: center; border-color: transparent;" onclick="hideCheckout()">← Вернуться к корзине</button>
-                <div class="form-status" id="checkoutStatus"></div>
-            </div>
+  <div id="catalog" class="page">
+    <div class="container">
+      <h2 class="fade-section">Наш <span>Каталог</span></h2>
+      <div class="controls-row fade-section">
+        <div class="filters" id="filterButtonsContainer"></div>
+        <div class="search-box">
+          <input type="search" id="searchInput" placeholder="Поиск по названию или стилю...">
+          <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
         </div>
+      </div>
+      <div class="catalog-grid" id="catalogGrid"></div>
+      <div class="no-results hidden" id="noResults" style="text-align:center; padding:5rem 0;">
+        <h3>Товары не найдены</h3>
+        <button class="btn-tech mt-4" onclick="resetFilters()">Сбросить поиск</button>
+      </div>
     </div>
+  </div>
+
+  <div id="about" class="page">
+    <div class="container">
+      <h2 class="fade-section">Философия <span>Качества</span></h2>
+      <div class="about-layout fade-section">
+        <div class="about-text">
+          <p class="lead">«Мы создаем повседневную одежду, которая говорит сама за себя — через чистые линии, тактильные ткани и смысловые принты»</p>
+          <p>Привет! Меня зовут Максим. Я основатель и ведущий дизайнер PRINT POETRY. Этот проект вырос из желания объединить современную уличную моду с графическим искусством. Каждая вещь в каталоге создается ограниченным тиражом из износостойких тканей премиум-класса с нанесением детализированной стойкой печати.</p>
+        </div>
+        <div class="about-img-wrap">
+          <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&fit=crop" class="about-img" alt="Основатель PRINT POETRY">
+        </div>
+      </div>
+
+      <div class="contact-section fade-section">
+        <div class="contact-info">
+          <h3>Индивидуальные <span>Заказы</span></h3>
+          <p style="color:var(--text-muted); margin-bottom:2rem">Отправьте запрос для разработки корпоративного мерча или индивидуального брендирования.</p>
+          <a href="mailto:print.poetry@art.me" class="brand-email-link" style="color:var(--neon-yellow); text-decoration:none">print.poetry@art.me</a>
+        </div>
+        <div class="contact-form">
+          <form id="contactForm" class="tech-form" novalidate>
+            <div class="form-grid">
+              <div class="form-group"><label>Ваше имя</label><input type="text" id="name" required placeholder="Иван"></div>
+              <div class="form-group"><label>Ваш Email</label><input type="email" id="email" required placeholder="example@mail.ru"></div>
+              <div class="form-group" style="grid-column: span 2;"><label>Суть проекта / Идеи</label><textarea id="message" rows="4" required placeholder="Опишите тираж, тип одежды и вашу задумку..."></textarea></div>
+            </div>
+            <label class="privacy-agreement">
+              <input type="checkbox" id="contactPrivacyCheck" required>
+              <span>Нажимая кнопку, вы соглашаетесь с <a href="#privacy" data-page="privacy">Политикой конфиденциальности</a> нашего магазина.</span>
+            </label>
+            <button type="submit" class="btn-tech" id="submitBtn" disabled>Отправить запрос</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="cart" class="page">
+    <div class="container">
+      <h2 class="fade-section">Ваша <span>Корзина</span></h2>
+      <div class="cart-layout fade-section">
+        <div class="cart-items-wrapper" id="cartItems"></div>
+        <div class="cart-summary" id="cartSummary">
+          <h3>Детали заказа</h3>
+          <div class="summary-row"><span>Товаров к отправке</span><span id="summaryItems">0 шт</span></div>
+          <div class="summary-row"><span>Доставка</span><span id="summaryDelivery">300 ₽</span></div>
+          <div class="summary-row total"><span>Итого к оплате</span><span id="summaryTotal">0 ₽</span></div>
+          <button class="btn-tech" id="checkoutBtn" disabled onclick="showCheckout()">Оформить заказ</button>
+        </div>
+      </div>
+
+      <div class="empty-cart hidden" id="emptyCart" style="text-align:center; padding:6rem 0;">
+        <p style="color:var(--text-muted); font-size:1.2rem; margin-bottom:2rem">В вашей корзине пока ничего нет</p>
+        <button class="btn-tech" data-nav="catalog">Перейти к покупкам</button>
+      </div>
+
+      <form class="checkout-form tech-form hidden mt-4 fade-section" id="checkoutForm" onsubmit="event.preventDefault(); placeOrder();">
+        <h3>Адрес и параметры доставки</h3>
+        <div class="form-grid" id="checkoutFormGrid">
+          <div class="form-group"><label>Имя получателя</label><input type="text" id="coName" required placeholder="Алексей"></div>
+          <div class="form-group"><label>Email для уведомлений</label><input type="email" id="coEmail" required placeholder="alex@mail.ru"></div>
+          <div class="form-group"><label>Телефон</label><input type="tel" id="coPhone" required placeholder="+7 999 123 45 67"></div>
+          <div class="form-group"><label>Адрес доставки (Город, Улица, Дом, Кв)</label><input type="text" id="coAddress" required placeholder="г. Москва, ул. Центральная, д. 15, кв. 42"></div>
+          
+          <div class="form-group" style="grid-column: span 2;">
+            <label>Способ оплаты</label>
+            <div class="payment-methods">
+              <div class="payment-method active" data-method="yookassa"><div>ЮKassa</div><div>Карты РФ, СБП</div></div>
+              <div class="payment-method" data-method="stripe"><div>Stripe</div><div>Международные карты</div></div>
+              <div class="payment-method" data-method="cod"><div>При получении</div><div>Наличные / Терминал</div></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group" style="margin-top: 1.5rem;">
+          <label class="privacy-agreement">
+            <input type="checkbox" id="checkoutPrivacyCheck" required>
+            <span>Я подтверждаю правильность введенных данных и даю согласие на обработку персональных данных в соответствии с <a href="#privacy" data-page="privacy">Политикой конфиденциальности</a>.</span>
+          </label>
+        </div>
+        
+        <div class="checkout-actions">
+          <button type="submit" class="btn-tech" id="placeOrderBtn" disabled>Подтвердить заказ</button>
+          <button type="button" class="btn-border" onclick="hideCheckout()">← Назад к корзине</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div id="privacy" class="page">
+    <div class="container">
+      <div class="privacy-card fade-section">
+        <h2>Политика <span>Конфиденциальности</span></h2>
+        <div class="privacy-meta">Дата последнего обновления: 17 июня 2026 года</div>
+        <div class="privacy-content">
+          <p>Настоящая Политикой конфиденциальности регулирует порядок обработки, сбора и хранения персональных данных пользователей интернет-магазина одежды <strong class="brand-name-text">PRINT POETRY</strong>.</p>
+          <p>Мы ответственно подходим к безопасности ваших личных данных и действуем в строгом соответствии с Федеральным законом РФ № 152-ФЗ «О персональных данных».</p>
+          <h3>1. Общие положения</h3>
+          <p>Использование интерфейсов сайта, оформление заказов или заполнение форм обратной связи означает безоговорочное согласие пользователя с настоящей Политикой.</p>
+          <h3>2. Какие данные мы собираем и обрабатываем</h3>
+          <p>Для успешного выполнения ваших заказов мы запрашиваем: имя получателя, адрес электронной почты, контактный номер телефона, точный адрес доставки, а также технические файлы cookies.</p>
+          <h3>3. Цели сбора персональных данных</h3>
+          <p>Ваша информация используется исключительно для обработки корзины, доставки посылок курьерскими службами и ответов на ваши индивидуальные запросы.</p>
+          <h3>4. Защита данных</h3>
+          <p>Мы применяем современные методы шифрования и протоколы SSL. Данные передаются только транспортным компаниям (СДЭК, Почта России) и платежным шлюзам для выполнения заказа.</p>
+        </div>
+      </div>
+    </div>
+  </div>
 </main>
 
-<div class="modal-overlay" id="productModal">
-    <div class="modal">
-        <button class="modal-close" id="modalClose"><svg viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></svg></button>
-        <div class="modal-content" id="modalContent"></div>
-    </div>
-</div>
+<div class="modal-overlay" id="productModal"><div class="modal"><button class="modal-close" id="modalClose">✕</button><div class="modal-content" id="modalContent"></div></div></div>
+<div class="modal-overlay" id="cabinetModal"><div class="modal" style="max-width: 460px; padding: 2.5rem;"><button class="modal-close" id="cabinetClose">✕</button><h3 style="font-family:'Playfair Display', serif; font-size:1.8rem; margin-bottom:1.5rem; text-align: center; font-weight:400;">Личный кабинет</h3><div class="form-group"><label>Ваш Email / Телефон</label><input type="text" placeholder="example@mail.ru" disabled></div><button class="btn-tech" style="justify-content:center; margin-top:1rem; width:100%" disabled>Войти в профиль</button></div></div>
 
 <div class="toast-container" id="toastContainer"></div>
 
 <footer>
-    <div class="container">
-        <div class="footer-grid">
-            <div class="footer-brand">
-                <a href="#home" class="logo" data-page="home">PRINT <span>poetry</span></a>
-                <p>Авторские акварельные принты. Ограниченные тиражи из Сальска с доставкой по всему миру.</p>
-            </div>
-            <div class="footer-col">
-                <h4>Коллекции</h4>
-                <a href="#catalog" data-page="catalog">Все товары</a>
-                <a href="#catalog" data-page="catalog">Футболки</a>
-                <a href="#catalog" data-page="catalog">Сумки</a>
-            </div>
-            <div class="footer-col">
-                <h4>Помощь</h4>
-                <a href="#about" data-page="about">О бренде</a>
-                <a href="#about" data-page="about">Доставка и возврат</a>
-                <a href="#about" data-page="about">Контакты</a>
-            </div>
-            <div class="footer-col">
-                <h4>Документы</h4>
-                <a href="#" onclick="showToast('Раздел в разработке','info');return false">Политика приватности</a>
-                <a href="#" onclick="showToast('Раздел в разработке','info');return false">Публичная оферта</a>
-            </div>
-        </div>
-        <div class="footer-bottom">© 2026 PRINT POETRY · Эстетика в каждой детали.</div>
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="#home" class="logo" data-page="home">PRINT <span>POETRY</span></a>
+        <p>Современная дизайнерская одежда с уникальными принтами. Создано для вашего базового и капсульного гардероба. Limited Edition.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Навигация</h4>
+        <a href="#catalog" data-page="catalog">Каталог товаров</a>
+        <a href="#about" data-page="about">О нашем бренде</a>
+      </div>
+      <div class="footer-col">
+        <h4>Документы</h4>
+        <a href="#privacy" data-page="privacy">Политика конфиденциальности</a>
+      </div>
     </div>
+    <div class="footer-bottom">
+      <span id="footerCopyright">© 2026 PRINT POETRY. Все права защищены.</span>
+      <a href="#privacy" data-page="privacy" style="color: var(--text-muted); text-decoration:none; font-size:0.85rem">152-ФЗ Защита данных</a>
+    </div>
+  </div>
 </footer>
 
 <script>
-// =========================================================================
-// БАЗА ДАННЫХ ТОВАРОВ — РЕДАКТИРУЙТЕ И ДОБАВЛЯЙТЕ КАРТИНКИ ЗДЕСЬ
-// =========================================================================
-const sampleProducts = [
-  {
-    id: 1,
-    name: "Футболка 'Акварельный рассвет'",
-    description: "Премиальный органический хлопок 180 г/м². Авторский художественный принт в пастельных тонах. Свободный унисекс-крой.",
-    price: 2490,
-    category: "tshirt",
-    badge: "Новинка",
-    tags: "акварель, рассвет, пастель",
-    stock: 12,
-    image: "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=800&fit=crop" // <-- Вставьте сюда ссылку на вашу картинку
-  },
-  {
-    id: 2,
-    name: "Футболка 'Туманный лес'",
-    description: "Мягкое хлопковое волокно с добавлением льна. Принт выполнен в технике сложной многослойной цифровой акварели.",
-    price: 2790,
-    category: "tshirt",
-    badge: "Лимитированная",
-    tags: "лес, туман, природа",
-    stock: 8,
-    image: "https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?w=800&fit=crop"
-  },
-  {
-    id: 3,
-    name: "Футболка 'Цветочная поэзия'",
-    description: "Нежный, едва уловимый паттерн с полевыми цветами. Идеально садится по фигуре, сохраняет форму после стирок.",
-    price: 2290,
-    category: "tshirt",
-    badge: "",
-    tags: "цветы, поэзия, весна",
-    stock: 15,
-    image: "https://images.unsplash.com/photo-1576566588028-4147f3842f27?w=800&fit=crop"
-  },
-  {
-    id: 4,
-    name: "Футболка 'Минималистичные линии'",
-    description: "Контурный чёрно-белый принт в духе современного скандинавского арта. Тяжелый хлопок высокой плотности 200 г/м².",
-    price: 1990,
-    category: "tshirt",
-    badge: "Хит",
-    tags: "минимализм, линии, графика",
-    stock: 20,
-    image: "https://images.unsplash.com/photo-1583743814966-8936f5b7be1a?w=800&fit=crop"
-  },
-  {
-    id: 5,
-    name: "Сумка-шоппер 'Акварельный сад'",
-    description: "Плотный неокрашенный хлопковый канвас. Высокопрочный двусторонний перенос рисунка, внутреннее отделение на молнии.",
-    price: 1890,
-    category: "bag",
-    badge: "Новинка",
-    tags: "сад, акварель, шоппер",
-    stock: 18,
-    image: "https://images.unsplash.com/photo-1590874103328-eac38a683ce7?w=800&fit=crop"
-  },
-  {
-    id: 6,
-    name: "Сумка 'Полевые травы'",
-    description: "Экологичный базовый шоппер из фактурного небеленого полотна. Естественная природная палитра оттенков.",
-    price: 1290,
-    category: "bag",
-    badge: "Эко коллекция",
-    tags: "эко, травы, природа",
-    stock: 25,
-    image: "https://images.unsplash.com/photo-1597484662317-9bd7bdda2907?w=800&fit=crop"
-  },
-  {
-    id: 7,
-    name: "Набор открыток 'Мотивы тишины'",
-    description: "Коллекционный сет из 5 миниатюр на премиальной дизайнерской бумаге с выраженной текстурой. Конверты из крафта в комплекте.",
-    price: 450,
-    category: "accessory",
-    badge: "Сет",
-    tags: "открытки, подарок, акварель",
-    stock: 40,
-    image: "https://images.unsplash.com/photo-1586075010923-2dd4570fb338?w=800&fit=crop"
-  }
+/* ==========================================
+   1. ГЛОБАЛЬНАЯ НАСТРОЙКА САЙТА (CONFIG)
+   ========================================== */
+const CONFIG = {
+  brandName: "PRINT POETRY",
+  contactEmail: "print.poetry@art.me",
+  deliveryPrice: 300,
+  freeDeliveryThreshold: 5000, // Бесплатная доставка при заказе от этой суммы
+  currency: " ₽",
+  storageKey: "pp_cart_secure_store"
+};
+
+/* ==========================================
+   2. НАСТРОЙКА КАТЕГОРИЙ ДЛЯ КАТАЛОГА
+   ========================================== */
+const CATALOG_CATEGORIES = [
+  { id: "all", title: "Все модели" },
+  { id: "tshirt", title: "Футболки" },
+  { id: "hoodie", title: "Худи" },
+  { id: "bag", title: "Сумки" },
+  { id: "accessory", title: "Аксессуары" }
 ];
 
-// =========================================================================
-// СИСТЕМНЫЙ КОД САЙТА (ЛОГИКА И ФУНКЦИОНАЛ)
-// =========================================================================
-const API_BASE = 'https://print-poetry-api.onrender.com';
-let products = [];
-const CART_KEY = 'pp_cart_v2';
-const $ = (s,c=document) => c.querySelector(s);
-const $$ = (s,c=document) => Array.from(c.querySelectorAll(s));
-const fmtPrice = n => n.toLocaleString('ru-RU') + ' ₽';
-const esc = str => { const d = document.createElement('div'); d.textContent = str; return d.innerHTML };
+/* ==========================================
+   3. БАЗА ДАННЫХ ТОВАРОВ (ПРОДУКТЫ)
+   Вы можете легко добавлять, удалять или изменять элементы списка
+   ========================================== */
+const sampleProducts = [
+  { id: 1, name: "Футболка 'Urban Poetry'", description: "Плотный органический хлопок высокой плотности (240 г/м²). Прямой крой, износостойкий концептуальный принт на груди и аккуратная окантовка швов.", price: 2990, category: "tshirt", badge: "Хит", image: "https://images.unsplash.com/photo-1502082553048-f009c37129b9?w=600&fit=crop" },
+  { id: 2, name: "Худи 'Over Size Edition'", description: "Тяжелый премиальный футер трехнитка с мягким начесом. Глубокий капюшон, минималистичная вышивка на рукаве.", price: 5490, category: "hoodie", badge: "Limit", image: "https://images.unsplash.com/photo-1556911220-e15b29be8c8f?w=600&fit=crop" },
+  { id: 3, name: "Футболка 'Minimal Line'", description: "Анатомический крой, дышащая ткань. Минималистичная абстрактная геометрия, нанесенная методом шелкографии.", price: 2490, category: "tshirt", badge: "New", image: "https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?w=600&fit=crop" },
+  { id: 4, name: "Свитшот 'Monochrome'", description: "Классический бруталистский силуэт, держащий форму. Вышивка фирменного логотипа тональными нитями.", price: 4890, category: "hoodie", badge: "Premium", image: "https://images.unsplash.com/photo-1551028719-00167b16eac5?w=600&fit=crop" },
+  { id: 5, name: "Поясной ремень 'Tech Belt'", description: "Ремень из текстильной сверхпрочной стропы со стильной магнитной пряжкой быстрого фиксажа и неоновыми элементами.", price: 1990, category: "accessory", badge: "Gear", image: "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=600&fit=crop" },
+  { id: 6, name: "Сумка-шоппер 'Canvas Bag'", description: "Вместительный шоппер из плотного канваса с внутренним карманом на молнии и крупной неоново-мятной типографикой.", price: 1790, category: "bag", badge: "Style", image: "https://images.unsplash.com/photo-1544816155-12df9643f363?w=600&fit=crop" },
+  { id: 7, name: "Кольцо 'Geometric Ring'", description: "Фактурное кольцо из ювелирного сплава с чернением. Универсальный геометрический дизайн, завершающий ваш образ.", price: 3200, category: "accessory", badge: "Silver", image: "https://images.unsplash.com/photo-1605100804763-247f67b3557e?w=600&fit=crop" }
+];
 
-async function api(method, endpoint, body) {
-  const opts = { method, headers: { 'Content-Type': 'application/json' } };
-  if (body) opts.body = JSON.stringify(body);
-  try {
-    const res = await fetch(API_BASE + endpoint, opts);
-    if (!res.ok) throw new Error('HTTP ' + res.status);
-    return await res.json();
-  } catch (e) {
-    console.error('API error:', e);
-    return { error: 'Ошибка соединения' };
-  }
-}
+/* ==========================================
+   4. СИСТЕМНЫЕ ПЕРЕМЕННЫЕ И СЕЛЕКТОРЫ
+   ========================================== */
+let products = sampleProducts;
+let currentFilter = 'all';
+let currentSearch = '';
+let selectedPayment = 'yookassa';
 
-async function loadProducts() {
-  const data = await api('GET', '/api/products');
-  if (!data.error && Array.isArray(data) && data.length > 0) {
-    products = data;
-  } else {
-    products = sampleProducts;
-    showToast('Каталог синхронизирован локально', 'info');
-  }
-  renderFeatured();
-  renderCatalog();
-}
+// Утилиты для быстрого поиска элементов DOM
+const $ = selector => document.querySelector(selector);
+const $$ = selector => Array.from(document.querySelectorAll(selector));
 
+// Форматирование вывода валюты
+const fmtPrice = value => value.toLocaleString('ru-RU') + CONFIG.currency;
+
+// Безопасное экранирование строк
+const esc = string => { 
+  const div = document.createElement('div'); 
+  div.textContent = string; 
+  return div.innerHTML; 
+};
+
+/* ==========================================
+   5. УПРАВЛЕНИЕ КОРЗИНОЙ (БИЗНЕС-ЛОГИКА)
+   ========================================== */
 class Cart {
-  constructor() { this.items = JSON.parse(localStorage.getItem(CART_KEY) || '[]') }
-  save() { localStorage.setItem(CART_KEY, JSON.stringify(this.items)); this.updateUI() }
-  add(p, qty=1) {
-    const ex = this.items.find(i => i.id === p.id);
-    if (ex) ex.qty += qty; else this.items.push({ id: p.id, qty, price: p.price, name: p.name, image: p.image_url || p.image });
+  constructor() {
+    this.items = JSON.parse(localStorage.getItem(CONFIG.storageKey) || '[]');
+  }
+  
+  save() {
+    localStorage.setItem(CONFIG.storageKey, JSON.stringify(this.items));
+    this.updateUI();
+  }
+  
+  add(product, qty = 1) {
+    const existing = this.items.find(item => item.id === product.id);
+    if (existing) {
+      existing.qty += qty;
+    } else {
+      this.items.push({ 
+        id: product.id, 
+        qty, 
+        price: product.price, 
+        name: product.name, 
+        image: product.image 
+      });
+    }
     this.save();
-    showToast(esc(p.name) + ' добавлен в заказ', 'success');
+    showToast(`${esc(product.name)} добавлен в корзину`);
   }
-  remove(id) { this.items = this.items.filter(i => i.id !== id); this.save() }
-  updateQty(id, d) {
-    const item = this.items.find(i => i.id === id);
-    if (!item) return;
-    item.qty += d;
-    if (item.qty < 1) this.remove(id); else this.save();
+  
+  remove(id) {
+    const itemElement = $(`.cart-item[data-id="${id}"]`);
+    if (itemElement) {
+      itemElement.classList.add('removing');
+      setTimeout(() => {
+        this.items = this.items.filter(item => item.id !== id);
+        this.save();
+        renderCart();
+      }, 400);
+    } else {
+      this.items = this.items.filter(item => item.id !== id);
+      this.save();
+      renderCart();
+    }
   }
-  clear() { this.items = []; this.save() }
-  get totalQty() { return this.items.reduce((s,i) => s + i.qty, 0) }
-  get totalPrice() { return this.items.reduce((s,i) => s + i.qty * i.price, 0) }
+  
+  updateQty(id, change) { 
+    const item = this.items.find(item => item.id === id); 
+    if (item) { 
+      item.qty += change; 
+      if (item.qty < 1) {
+        this.remove(id);
+      } else { 
+        this.save(); 
+        renderCart();
+      } 
+    } 
+  }
+  
+  clear() { 
+    this.items = []; 
+    this.save(); 
+  }
+  
+  get totalQty() { return this.items.reduce((sum, item) => sum + item.qty, 0); }
+  get totalPrice() { return this.items.reduce((sum, item) => sum + (item.qty * item.price), 0); }
+  
   updateUI() {
-    const c = this.totalQty;
-    $('#cartCount').textContent = c;
-    $('#cartCount').classList.toggle('hidden', c === 0);
-    const m = $('#mobileCartCount');
-    if (m) m.textContent = c ? '(' + c + ')' : '';
+    const totalCount = this.totalQty;
+    $('#cartCount').textContent = totalCount;
+    $('#cartCount').classList.toggle('hidden', totalCount === 0);
+    if ($('#mobileCartCount')) {
+      $('#mobileCartCount').textContent = totalCount ? `(${totalCount})` : '';
+    }
   }
 }
+
 const cart = new Cart();
 
-function renderCard(p) {
-  const img = p.image_url || p.image || 'https://images.unsplash.com/photo-1558618666-fcd25c85f82e?w=600&h=600&fit=crop';
-  return '<article class="product-card fade-section" data-id="' + p.id + '" data-category="' + p.category + '">' +
-    '<div class="card-img-wrap"><img src="' + img + '" alt="' + esc(p.name) + '" loading="lazy">' +
-    (p.badge ? '<span class="card-badge">' + esc(p.badge) + '</span>' : '') + '</div>' +
-    '<div class="card-body"><h3>' + esc(p.name) + '</h3><p class="card-desc">' + esc(p.description || p.desc || '') + '</p>' +
-    '<div class="card-footer"><span class="card-price">' + fmtPrice(p.price) + '</span>' +
-    '<button class="add-to-cart" data-id="' + p.id + '" aria-label="Добавить в корзину"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></button></div></div></article>';
-}
+/* ==========================================
+   6. ИНИЦИАЛИЗАЦИЯ И ИНТЕРФЕЙС КАТАЛОГА
+   ========================================== */
+function initDynamicContent() {
+  // Настройка динамических текстов на основе CONFIG
+  $$('.brand-name-text').forEach(el => el.textContent = CONFIG.brandName);
+  $$('.brand-email-link').forEach(el => {
+    el.textContent = CONFIG.contactEmail;
+    el.href = `mailto:${CONFIG.contactEmail}`;
+  });
+  $('#footerCopyright').textContent = `© ${new Date().getFullYear()} ${CONFIG.brandName}. Все права защищены.`;
 
-function renderFeatured() {
-  $('#featuredGrid').innerHTML = products.slice(0, 3).map(renderCard).join('');
-  attachEvents($$('#featuredGrid .product-card'));
-}
-
-let currentFilter = 'all', currentSearch = '';
-
-function renderCatalog() {
-  let f = products;
-  if (currentFilter !== 'all') f = f.filter(p => p.category === currentFilter);
-  if (currentSearch.trim()) {
-    const q = currentSearch.toLowerCase();
-    f = f.filter(p => (p.name || '').toLowerCase().includes(q) || (p.description || p.desc || '').toLowerCase().includes(q) || (p.tags || '').includes(q));
+  // Генерация кнопок фильтров
+  const filtersContainer = $('#filterButtonsContainer');
+  if (filtersContainer) {
+    filtersContainer.innerHTML = CATALOG_CATEGORIES.map((cat, i) => `
+      <button class="filter-btn ${i === 0 ? 'active' : ''}" data-filter="${cat.id}">${cat.title}</button>
+    `).join('');
   }
-  const grid = $('#catalogGrid'), noRes = $('#noResults');
-  if (!f.length) { grid.innerHTML = ''; noRes.classList.remove('hidden'); }
-  else { noRes.classList.add('hidden'); grid.innerHTML = f.map(renderCard).join(''); attachEvents($$('#catalogGrid .product-card')); }
-  checkVis();
-}
 
-function attachEvents(cards) {
-  cards.forEach(card => {
-    card.addEventListener('click', e => { if (e.target.closest('.add-to-cart')) return; openModal(+card.dataset.id) });
-    const btn = card.querySelector('.add-to-cart');
-    if (btn) btn.addEventListener('click', e => { e.stopPropagation(); const p = products.find(x => x.id === +btn.dataset.id); if (p) cart.add(p) });
+  // Отрисовка витрины новинок на главной (первые 3 товара)
+  $('#featuredGrid').innerHTML = products.slice(0, 3).map((p, i) => renderCardHtml(p, i)).join('');
+  renderCatalogGrid();
+  
+  // Привязка кликов к созданным фильтрам
+  $$('.filter-btn').forEach(btn => {
+    btn.onclick = () => {
+      $$('.filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      currentFilter = btn.dataset.filter;
+      renderCatalogGrid();
+    };
   });
 }
 
-function openModal(id) {
-  const p = products.find(x => x.id === id); if (!p) return;
-  const img = p.image_url || p.image || 'https://images.unsplash.com/photo-1558618666-fcd25c85f82e?w=600&h=600&fit=crop';
-  const tags = (p.tags || '').split(',').map(t => t.trim()).filter(t => t).map(t => '<span>#' + esc(t) + '</span>').join('');
-  $('#modalContent').innerHTML = '<div class="modal-img"><img src="' + img + '" alt="' + esc(p.name) + '"></div>' +
-    '<div class="modal-info"><h3>' + esc(p.name) + '</h3><div class="price">' + fmtPrice(p.price) + '</div>' +
-    '<p class="desc">' + esc(p.description || p.desc || '') + '</p>' +
-    '<div class="modal-meta">' + tags + '<span>Арт. ' + String(p.id).padStart(3, '0') + '</span>' + (p.stock !== undefined ? '<span>Доступно: ' + p.stock + ' шт</span>' : '') + '</div>' +
-    '<div class="modal-actions"><div class="qty-selector"><button id="mMinus">−</button><span id="mQty">1</span><button id="mPlus">+</button></div>' +
-    '<button class="btn btn-primary" id="mAdd" style="height:48px;">В корзину — ' + fmtPrice(p.price) + '</button></div></div>';
-  $('#productModal').classList.add('open');
-  document.body.style.overflow = 'hidden';
-  let qty = 1;
-  const upd = () => { $('#mQty').textContent = qty; $('#mAdd').textContent = 'В корзину — ' + fmtPrice(p.price * qty) };
-  $('#mMinus').onclick = () => { if (qty > 1) { qty--; upd() } };
-  $('#mPlus').onclick = () => { qty++; upd() };
-  $('#mAdd').onclick = () => { cart.add(p, qty); closeModal() };
+function renderCardHtml(product, index = 0) {
+  return `
+    <article class="product-card fade-section" data-id="${product.id}" style="transition-delay: ${index * 0.05}s">
+      <div class="card-img-wrap">
+        <img src="${product.image}" alt="${esc(product.name)}" loading="lazy">
+        ${product.badge ? `<span class="badge-tech" style="position:absolute; top:1rem; left:1rem; z-index:2;">${esc(product.badge)}</span>` : ''}
+      </div>
+      <div class="card-body">
+        <h3>${esc(product.name)}</h3>
+        <p class="card-desc">${esc(product.description)}</p>
+        <div class="card-footer">
+          <span class="card-price">${fmtPrice(product.price)}</span>
+          <button class="add-to-cart-btn" data-id="${product.id}">
+            <svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>
+          </button>
+        </div>
+      </div>
+    </article>
+  `;
 }
 
-function closeModal() { $('#productModal').classList.remove('open'); document.body.style.overflow = '' }
-$('#modalClose').addEventListener('click', closeModal);
-$('#productModal').addEventListener('click', e => { if (e.target === $('#productModal')) closeModal() });
-document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal() });
-
-function renderCart() {
-  const container = $('#cartItems'), empty = $('#emptyCart'), summary = $('#cartSummary'), checkout = $('#checkoutForm');
-  if (!cart.items.length) {
-    container.innerHTML = ''; empty.classList.remove('hidden'); summary.classList.add('hidden'); checkout.classList.add('hidden'); return;
+function renderCatalogGrid() {
+  let filtered = products;
+  if (currentFilter !== 'all') {
+    filtered = filtered.filter(p => p.category === currentFilter);
   }
-  empty.classList.add('hidden'); summary.classList.remove('hidden'); checkout.classList.add('hidden');
-  container.innerHTML = cart.items.map(item => {
-    const p = products.find(x => x.id === item.id) || {};
-    const img = p.image_url || p.image || 'https://images.unsplash.com/photo-1558618666-fcd25c85f82e?w=600&h=600&fit=crop';
-    return '<div class="cart-item" data-id="' + item.id + '"><img src="' + img + '" alt="' + esc(p.name || '') + '" loading="lazy">' +
-      '<div class="cart-item-info"><h4>' + esc(p.name || '') + '</h4><p>' + esc(p.description || p.desc || '').substring(0,60) + '...</p>' +
-      '<span class="remove-item" data-id="' + item.id + '">Удалить из заказа</span></div>' +
-      '<div class="cart-item-qty"><button data-id="' + item.id + '" data-d="-1">−</button><span>' + item.qty + '</span><button data-id="' + item.id + '" data-d="1">+</button></div>' +
-      '<div class="cart-item-price">' + fmtPrice(item.qty * item.price) + '</div></div>';
-  }).join('');
-  $$('.cart-item-qty button').forEach(b => b.addEventListener('click', () => cart.updateQty(+b.dataset.id, +b.dataset.d)));
-  $$('.remove-item').forEach(b => b.addEventListener('click', () => { cart.remove(+b.dataset.id); showToast('Удалено', 'info'); renderCart() }));
+  if (currentSearch.trim()) { 
+    const query = currentSearch.toLowerCase(); 
+    filtered = filtered.filter(p => p.name.toLowerCase().includes(query)); 
+  }
+  
+  const grid = $('#catalogGrid');
+  if (!filtered.length) { 
+    grid.innerHTML = ''; 
+    $('#noResults').classList.remove('hidden'); 
+  } else { 
+    $('#noResults').classList.add('hidden'); 
+    grid.innerHTML = filtered.map((p, i) => renderCardHtml(p, i)).join(''); 
+  }
+  attachCardEvents(); 
+  refreshScrollObserver();
+}
+
+function attachCardEvents() {
+  $$('.product-card').forEach(card => {
+    card.onclick = (e) => { 
+      if (!e.target.closest('.add-to-cart-btn')) openModal(+card.dataset.id); 
+    };
+    const addBtn = card.querySelector('.add-to-cart-btn');
+    if (addBtn) {
+      addBtn.onclick = (e) => { 
+        e.stopPropagation(); 
+        const p = products.find(x => x.id === +addBtn.dataset.id); 
+        if (p) cart.add(p); 
+      };
+    }
+  });
+}
+
+/* ==========================================
+   7. ОПИСАНИЕ И МОДАЛЬНЫЕ ОКНА ТОВАРОВ
+   ========================================== */
+function openModal(id) {
+  const p = products.find(x => x.id === id); 
+  if (!p) return;
+  
+  $('#modalContent').innerHTML = `
+    <div class="modal-img"><img src="${p.image}" alt="${esc(p.name)}"></div>
+    <div class="modal-info">
+      <h3>${esc(p.name)}</h3>
+      <div class="price">${fmtPrice(p.price)}</div>
+      <p class="desc">${esc(p.description)}</p>
+      <div class="modal-actions">
+        <div class="qty-selector">
+          <button id="mMinus">−</button>
+          <span id="mQty">1</span>
+          <button id="mPlus">+</button>
+        </div>
+        <button class="btn-tech" id="mAdd">В корзину</button>
+      </div>
+    </div>
+  `;
+  $('#productModal').classList.add('open');
+  
+  let currentQty = 1;
+  $('#mMinus').onclick = () => { if (currentQty > 1) { currentQty--; $('#mQty').textContent = currentQty; } };
+  $('#mPlus').onclick = () => { currentQty++; $('#mQty').textContent = currentQty; };
+  $('#mAdd').onclick = () => { cart.add(p, currentQty); closeModal(); };
+}
+
+function closeModal() { $('#productModal').classList.remove('open'); }
+$('#modalClose').onclick = closeModal;
+
+$('#cabinetBtn').onclick = () => $('#cabinetModal').classList.add('open');
+$('#cabinetClose').onclick = () => $('#cabinetModal').classList.remove('open');
+
+/* ==========================================
+   8. ИНТЕРФЕЙС КОРЗИНЫ И СЛУЖЕБНЫЕ ФУНКЦИИ
+   ========================================== */
+function renderCart() {
+  const container = $('#cartItems');
+  if (!cart.items.length) {
+    container.innerHTML = '';
+    $('#emptyCart').classList.remove('hidden');
+    $('#cartSummary').classList.add('hidden');
+    $('#checkoutForm').classList.add('hidden');
+    return;
+  }
+  
+  $('#emptyCart').classList.add('hidden');
+  $('#cartSummary').classList.remove('hidden');
+  
+  container.innerHTML = cart.items.map(item => `
+    <div class="cart-item" data-id="${item.id}">
+      <img src="${item.image}">
+      <div class="cart-item-info">
+        <h4>${esc(item.name)}</h4>
+        <div class="cart-item-qty">
+          <button onclick="cart.updateQty(${item.id}, -1)">−</button>
+          <span>${item.qty}</span>
+          <button onclick="cart.updateQty(${item.id}, 1)">+</button>
+        </div>
+        <span class="remove-item" onclick="cart.remove(${item.id});">Удалить</span>
+      </div>
+      <div class="cart-item-price">${fmtPrice(item.qty * item.price)}</div>
+    </div>
+  `).join('');
+  
   $('#summaryItems').textContent = cart.totalQty + ' шт';
-  const delivery = cart.totalPrice >= 5000 ? 0 : 300;
-  $('#summaryDelivery').textContent = delivery ? '300 ₽' : 'Бесплатно';
-  $('#summaryTotal').textContent = fmtPrice(cart.totalPrice + delivery);
+  
+  // Расчет стоимости доставки на основе порогового значения CONFIG
+  const currentDeliveryCost = cart.totalPrice >= CONFIG.freeDeliveryThreshold ? 0 : CONFIG.deliveryPrice;
+  $('#summaryDelivery').textContent = currentDeliveryCost === 0 ? 'Бесплатно' : `${CONFIG.deliveryPrice} ₽`;
+  $('#summaryTotal').textContent = fmtPrice(cart.totalPrice + currentDeliveryCost);
   $('#checkoutBtn').disabled = false;
 }
 
-let selectedPayment = 'yookassa';
-function showCheckout() { $('#cartSummary').classList.add('hidden'); $('#cartItems').classList.add('hidden'); $('#checkoutForm').classList.remove('hidden') }
-function hideCheckout() { $('#cartSummary').classList.remove('hidden'); $('#cartItems').classList.remove('hidden'); $('#checkoutForm').classList.add('hidden') }
+function showCheckout() {
+  $('#checkoutForm').classList.remove('hidden');
+  $('#checkoutForm').scrollIntoView({ behavior: 'smooth' });
+}
+function hideCheckout() { $('#checkoutForm').classList.add('hidden'); }
+
+window.resetFilters = () => {
+  $('#searchInput').value = '';
+  currentSearch = '';
+  currentFilter = 'all';
+  $$('.filter-btn').forEach(b => b.classList.toggle('active', b.dataset.filter === 'all'));
+  renderCatalogGrid();
+};
+
 $$('.payment-method').forEach(el => {
-  el.addEventListener('click', () => { $$('.payment-method').forEach(m => m.classList.remove('active')); el.classList.add('active'); selectedPayment = el.dataset.method });
+  el.onclick = () => { 
+    $$('.payment-method').forEach(m => m.classList.remove('active')); 
+    el.classList.add('active'); 
+    selectedPayment = el.dataset.method; 
+  };
 });
 
-async function placeOrder() {
-  const name = $('#coName').value.trim(), email = $('#coEmail').value.trim(), phone = $('#coPhone').value.trim(), address = $('#coAddress').value.trim();
-  const status = $('#checkoutStatus');
-  if (!name || name.length < 2) { status.textContent = 'Укажите ваше имя'; status.className = 'form-status error'; return }
-  if (!email || !email.includes('@')) { status.textContent = 'Некорректный email адрес'; status.className = 'form-status error'; return }
-  if (!cart.items.length) { status.textContent = 'Ваша корзина пуста'; status.className = 'form-status error'; return }
-  $('#placeOrderBtn').disabled = true; $('#placeOrderBtn').textContent = 'Формирование платежа...';
-  const items = cart.items.map(i => ({ id: i.id, qty: i.qty }));
-  const orderData = await api('POST', '/api/orders', { customer_name: name, customer_email: email, customer_phone: phone, customer_address: address, items });
-  if (orderData.error) {
-    status.textContent = orderData.error; status.className = 'form-status error';
-    $('#placeOrderBtn').disabled = false; $('#placeOrderBtn').textContent = 'Подтвердить и оплатить'; return;
-  }
-  if (selectedPayment === 'yookassa') {
-    const pay = await api('POST', '/api/payments/yookassa', { order_id: orderData.order_id, return_url: location.href.split('#')[0] + '#cart?payment=success' });
-    if (pay.payment_url) { location.href = pay.payment_url; return }
-  } else if (selectedPayment === 'stripe') {
-    const pay = await api('POST', '/api/payments/stripe', { order_id: orderData.order_id });
-    if (pay.payment_url) { location.href = pay.payment_url; return }
-  }
-  cart.clear();
-  showToast('Заказ успешно зарегистрирован', 'success');
-  switchPage('home');
-  $('#placeOrderBtn').disabled = false; $('#placeOrderBtn').textContent = 'Подтвердить и оплатить';
+/* Валидатор форм активации кнопок отправки */
+const listenFormValidation = (formSelector, privacyCheckboxSelector, submitButtonSelector) => {
+  const form = $(formSelector);
+  const checkbox = $(privacyCheckboxSelector);
+  const btn = $(submitButtonSelector);
+  if (!form || !checkbox || !btn) return;
+  
+  const validationHandler = () => {
+    const allFieldsFilled = Array.from(form.querySelectorAll('input[required], textarea[required]')).every(input => input.value.trim() !== '');
+    btn.disabled = !(checkbox.checked && allFieldsFilled);
+  };
+  
+  form.addEventListener('input', validationHandler);
+  checkbox.addEventListener('change', validationHandler);
+};
+
+function placeOrder() {
+  showToast("Обработка и создание заказа...");
+  setTimeout(() => { 
+    cart.clear(); 
+    showToast(`Ваш заказ успешно оформлен в ${CONFIG.brandName}!`); 
+    switchPage('home'); 
+  }, 1400);
 }
 
-const pages = { home: $('#home'), catalog: $('#catalog'), about: $('#about'), cart: $('#cart') };
+/* Переключатель SPA экранов */
+const pages = { home: $('#home'), catalog: $('#catalog'), about: $('#about'), cart: $('#cart'), privacy: $('#privacy') };
 function switchPage(pageId) {
   if (!pages[pageId]) pageId = 'home';
   Object.values(pages).forEach(p => p.classList.remove('active'));
   pages[pageId].classList.add('active');
   $$('.nav-desktop a, .mobile-menu a').forEach(a => a.classList.toggle('active', a.dataset.page === pageId));
   window.scrollTo({ top: 0, behavior: 'smooth' });
-  document.title = { home: 'PRINT POETRY', catalog: 'Каталог — PRINT POETRY', about: 'О бренде — PRINT POETRY', cart: 'Корзина — PRINT POETRY' }[pageId] || 'PRINT POETRY';
   if (pageId === 'cart') renderCart();
-  if (pageId === 'catalog') renderCatalog();
-  setTimeout(checkVis, 80);
-  $('#mobileMenu').classList.remove('open');
+  $('#mobileMenu').classList.remove('open'); 
   $('#burger').classList.remove('active');
+  refreshScrollObserver();
 }
 
 document.addEventListener('click', e => {
   const link = e.target.closest('[data-page], [data-nav]');
-  if (!link) return;
-  e.preventDefault();
-  const target = link.dataset.page || link.dataset.nav;
-  if (target) { switchPage(target); history.pushState(null, '', '#' + target) }
-});
-
-window.addEventListener('popstate', () => { switchPage(location.hash.replace('#', '') || 'home') });
-
-$('#burger').addEventListener('click', () => {
-  const menu = $('#mobileMenu'), btn = $('#burger'), open = !menu.classList.contains('open');
-  menu.classList.toggle('open', open); btn.classList.toggle('active', open);
-});
-
-$$('.filter-btn').forEach(btn => {
-  btn.addEventListener('click', () => { $$('.filter-btn').forEach(b => b.classList.remove('active')); btn.classList.add('active'); currentFilter = btn.dataset.filter; renderCatalog() });
-});
-
-const debounce = (fn, ms) => { let t; return (...a) => { clearTimeout(t); t = setTimeout(() => fn(...a), ms) } };
-$('#searchInput').addEventListener('input', debounce(e => { currentSearch = e.target.value; renderCatalog() }, 300));
-
-window.resetFilters = () => { currentFilter = 'all'; currentSearch = ''; $('#searchInput').value = ''; $$('.filter-btn').forEach(b => b.classList.toggle('active', b.dataset.filter === 'all')); renderCatalog() };
-
-const form = $('#contactForm');
-form.addEventListener('submit', async e => {
-  e.preventDefault();
-  const nameOk = $('#name').value.trim().length >= 2;
-  const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test($('#email').value.trim());
-  $('#name').classList.toggle('error', !nameOk); $('#email').classList.toggle('error', !emailOk);
-  if (!nameOk || !emailOk) return;
-  const btn = $('#submitBtn'), status = $('#formStatus');
-  btn.disabled = true; btn.textContent = 'Передача данных...';
-  try {
-    const res = await fetch(form.action, { method: 'POST', body: new FormData(form), headers: { Accept: 'application/json' } });
-    if (res.ok) { status.textContent = 'Ваше сообщение отправлено!'; status.className = 'form-status success'; form.reset(); showToast('Успешно отправлено', 'success') }
-    else throw new Error();
-  } catch {
-    status.textContent = 'Ошибка. Пожалуйста, напишите нам напрямую на электронную почту.'; status.className = 'form-status error';
+  if (link) { 
+    e.preventDefault(); 
+    switchPage(link.dataset.page || link.dataset.nav); 
   }
-  btn.disabled = false; btn.textContent = 'Отправить сообщение';
 });
 
-function showToast(msg, type) {
-  const c = $('#toastContainer');
-  const t = document.createElement('div');
-  t.className = 'toast ' + type;
-  t.innerHTML = '<span>' + (type === 'success' ? '✓' : 'ℹ') + '</span><span>' + esc(msg) + '</span>';
-  c.appendChild(t);
-  setTimeout(() => { t.style.opacity = '0'; transform = 'translateY(10px)'; setTimeout(() => t.remove(), 400) }, 3000);
-}
-window.showToast = showToast;
+$('#burger').onclick = () => { 
+  const isOpen = $('#mobileMenu').classList.toggle('open'); 
+  $('#burger').classList.toggle('active', isOpen); 
+};
+$('#searchInput').oninput = (e) => { currentSearch = e.target.value; renderCatalogGrid(); };
 
-const observer = new IntersectionObserver(entries => { entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible') }) }, { threshold: 0.05 });
-function checkVis() { $$('.fade-section').forEach(el => observer.observe(el)) }
-
-function init() {
-  cart.updateUI();
-  loadProducts();
-  const hash = location.hash.replace('#', '') || 'home';
-  switchPage(hash);
-  checkVis();
-  setTimeout(() => { $$('.fade-section').forEach(el => { const r = el.getBoundingClientRect(); if (r.top < window.innerHeight && r.bottom > 0) el.classList.add('visible') }) }, 100);
+function showToast(msg) {
+  const container = $('#toastContainer'); 
+  const toast = document.createElement('div'); 
+  toast.className = 'toast';
+  toast.innerHTML = `<span>✓</span><span>${esc(msg)}</span>`; 
+  container.appendChild(toast);
+  setTimeout(() => { toast.style.opacity = '0'; setTimeout(() => toast.remove(), 400); }, 3000);
 }
 
-if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init); else init();
+// Появление элементов при скролле (Intersection Observer)
+const scrollObserver = new IntersectionObserver(entries => { 
+  entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('visible'); }) 
+}, { threshold: 0.05 });
+
+function refreshScrollObserver() { 
+  $$('.fade-section').forEach(el => scrollObserver.observe(el)); 
+}
+
+window.addEventListener('scroll', () => { 
+  $('#header').classList.toggle('scrolled', window.scrollY > 20); 
+});
+
+$('#contactForm').onsubmit = (e) => { 
+  e.preventDefault(); 
+  showToast("Ваш запрос успешно отправлен!"); 
+  $('#contactForm').reset(); 
+  $('#submitBtn').disabled = true; 
+};
+
+// Запуск приложения при полной готовности DOM
+document.addEventListener('DOMContentLoaded', () => { 
+  cart.updateUI(); 
+  initDynamicContent(); 
+  switchPage('home');
+  listenFormValidation('#contactForm', '#contactPrivacyCheck', '#submitBtn');
+  listenFormValidation('#checkoutForm', '#checkoutPrivacyCheck', '#placeOrderBtn');
+});
 </script>
 </body>
 </html>
