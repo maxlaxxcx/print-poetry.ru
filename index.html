@@ -316,7 +316,7 @@ footer { background: #040808; border-top: 1px solid rgba(255,255,255,0.05); padd
 @media(max-width: 1024px) { .hero-wrapper, .about-layout, .cart-layout { grid-template-columns: 1fr; gap: 4rem; } .hero-visual { order: -1; } .floating-card { left: 50%; transform: translateX(-50%); bottom: -20px; } .modal-content { grid-template-columns: 1fr; } .footer-grid { grid-template-columns: 1fr 1fr; } .cart-summary { position: static; width: 100%; } }
 @media(max-width: 768px) { .nav-desktop { display: none; } .burger { display: flex; } .controls-row { flex-direction: column; align-items: stretch; gap: 2rem; } .filters { justify-content: center; border-radius: 24px; } .search-box input { width: 100%; } .footer-grid { grid-template-columns: 1fr; gap: 3rem; } h2 { font-size: 2.5rem; } .privacy-card { padding: 2rem; } .form-grid, .payment-methods { grid-template-columns: 1fr; } .checkout-actions { flex-direction: column; } .checkout-actions button { width: 100%; } }
  /* Делаем фото основателя круглым */
-.about-img {
+about-img {
   border-radius: 50% !important; /* Придаем элементу форму круга */
   aspect-ratio: 1 / 1;          /* Обеспечиваем одинаковую ширину и высоту для правильного круга */
   object-fit: cover;          /* Сохраняем пропорции изображения внутри круга */
@@ -326,7 +326,7 @@ footer { background: #040808; border-top: 1px solid rgba(255,255,255,0.05); padd
 }
 
 /* На всякий случай: убираем старый border-radius у контейнера, если он мешает */
-.about-img-wrap {
+about-img-wrap {
   border-radius: 0;
 }
 </style>
