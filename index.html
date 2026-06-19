@@ -315,21 +315,6 @@ footer { background: #040808; border-top: 1px solid rgba(255,255,255,0.05); padd
 /* Адаптивность (Media Queries) */
 @media(max-width: 1024px) { .hero-wrapper, .about-layout, .cart-layout { grid-template-columns: 1fr; gap: 4rem; } .hero-visual { order: -1; } .floating-card { left: 50%; transform: translateX(-50%); bottom: -20px; } .modal-content { grid-template-columns: 1fr; } .footer-grid { grid-template-columns: 1fr 1fr; } .cart-summary { position: static; width: 100%; } }
 @media(max-width: 768px) { .nav-desktop { display: none; } .burger { display: flex; } .controls-row { flex-direction: column; align-items: stretch; gap: 2rem; } .filters { justify-content: center; border-radius: 24px; } .search-box input { width: 100%; } .footer-grid { grid-template-columns: 1fr; gap: 3rem; } h2 { font-size: 2.5rem; } .privacy-card { padding: 2rem; } .form-grid, .payment-methods { grid-template-columns: 1fr; } .checkout-actions { flex-direction: column; } .checkout-actions button { width: 100%; } }
-.about-img {
-  width: 100%;
-  height: auto;
-  aspect-ratio: 1 / 1;    /* Принудительно делаем пропорции изображения квадратными */
-  object-fit: cover;      /* Чтобы фото не сжималось и не растягивалось внутри круга */
-  border-radius: 50%;     /* Делает изображение идеально круглым */
-  display: block;
-}
-.about-img-wrap {
-  position: relative;
-  overflow: hidden;
-  border-radius: 50%;     /* Дублируем скругление для самого контейнера */
-  max-width: 450px;       /* Ограничиваем максимальный размер, чтобы круг не был гигантским */
-  margin: 0 auto;         /* Центрируем фото по горизонтали */
-}
 </style>
 </head>
 <body>
@@ -420,9 +405,6 @@ footer { background: #040808; border-top: 1px solid rgba(255,255,255,0.05); padd
         <div class="about-text">
           <p class="lead">«Мы создаем повседневную одежду, которая говорит сама за себя — через чистые линии, тактильные ткани и смысловые принты»</p>
           <p>Привет! Меня зовут Максим. Я основатель и ведущий дизайнер PRINT POETRY. Этот проект вырос из желания объединить современную уличную моду с графическим искусством. Каждая вещь в каталоге создается ограниченным тиражом из износостойких тканей премиум-класса с нанесением детализированной стойкой печати.</p>
-        </div>
-        <div class="about-img-wrap">
-          <img src="assets/img/about-img.jpg" alt="Основатель PRINT POETRY">
         </div>
       </div>
 
