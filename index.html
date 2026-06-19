@@ -315,6 +315,20 @@ footer { background: #040808; border-top: 1px solid rgba(255,255,255,0.05); padd
 /* Адаптивность (Media Queries) */
 @media(max-width: 1024px) { .hero-wrapper, .about-layout, .cart-layout { grid-template-columns: 1fr; gap: 4rem; } .hero-visual { order: -1; } .floating-card { left: 50%; transform: translateX(-50%); bottom: -20px; } .modal-content { grid-template-columns: 1fr; } .footer-grid { grid-template-columns: 1fr 1fr; } .cart-summary { position: static; width: 100%; } }
 @media(max-width: 768px) { .nav-desktop { display: none; } .burger { display: flex; } .controls-row { flex-direction: column; align-items: stretch; gap: 2rem; } .filters { justify-content: center; border-radius: 24px; } .search-box input { width: 100%; } .footer-grid { grid-template-columns: 1fr; gap: 3rem; } h2 { font-size: 2.5rem; } .privacy-card { padding: 2rem; } .form-grid, .payment-methods { grid-template-columns: 1fr; } .checkout-actions { flex-direction: column; } .checkout-actions button { width: 100%; } }
+ /* Делаем фото основателя круглым */
+.about-img {
+  border-radius: 50% !important; /* Придаем элементу форму круга */
+  aspect-ratio: 1 / 1;          /* Обеспечиваем одинаковую ширину и высоту для правильного круга */
+  object-fit: cover;          /* Сохраняем пропорции изображения внутри круга */
+  max-width: 400px;             /* (Опционально) Ограничиваем максимальный размер круга */
+  margin: 0 auto;               /* (Опционально) Центрируем круг, если он меньше контейнера */
+  display: block;               /* Для корректной работы центрирования через margin */
+}
+
+/* На всякий случай: убираем старый border-radius у контейнера, если он мешает */
+.about-img-wrap {
+  border-radius: 0;
+}
 </style>
 </head>
 <body>
@@ -407,7 +421,7 @@ footer { background: #040808; border-top: 1px solid rgba(255,255,255,0.05); padd
           <p>Привет! Меня зовут Максим. Я основатель и ведущий дизайнер PRINT POETRY. Этот проект вырос из желания объединить современную уличную моду с графическим искусством. Каждая вещь в каталоге создается ограниченным тиражом из износостойких тканей премиум-класса с нанесением детализированной стойкой печати.</p>
         </div>
         <div class="about-img-wrap">
-          <img src="assets/img/about.png" alt="Основатель PRINT POETRY">
+          <img src="assets/img/about-img.jpg" alt="Основатель PRINT POETRY">
         </div>
       </div>
 
