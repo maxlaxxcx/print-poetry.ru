@@ -183,7 +183,7 @@ h2 span { color: var(--neon-yellow); font-style: italic; text-shadow: 0 0 20px r
 .card-body h3 { font-family: 'Playfair Display', serif; font-size: 1.45rem; margin-bottom: 0.5rem; font-weight: 400; color: var(--text-white); transition: var(--transition); }
 .product-card:hover .card-body h3 { color: var(--neon-yellow); text-shadow: 0 0 10px rgba(57, 230, 160, 0.2); }
 .card-desc { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1.5rem; flex: 1; line-height: 1.5; }
-.card-footer { display: flex; align-items: center; justify-content: space-between; }
+.footer-grid { display: flex; align-items: center; justify-content: space-between; }
 .card-price { font-size: 1.3rem; font-weight: 600; color: var(--accent-orange); }
 
 .add-to-cart-btn { width: 50px; height: 50px; border-radius: 50%; background: rgba(255,255,255,0.04); display: grid; place-items: center; transition: var(--transition); border: 1px solid rgba(255,255,255,0.08); }
@@ -201,8 +201,44 @@ h2 span { color: var(--neon-yellow); font-style: italic; text-shadow: 0 0 20px r
 .modal-close { position: absolute; top: 1.5rem; right: 1.5rem; width: 44px; height: 44px; border-radius: 50%; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); display: grid; place-items: center; cursor: pointer; z-index: 10; color: var(--text-white); transition: var(--transition); }
 .modal-close:hover { background: var(--neon-yellow); color: var(--bg-deep); transform: rotate(90deg); border-color: transparent; }
 .modal-content { display: grid; grid-template-columns: 1fr 1.1fr; }
-.modal-img { aspect-ratio: 1; background: #000; overflow: hidden; }
+
+/* Кастомизация фото в модалке под два ракурса */
+.modal-img { aspect-ratio: 1; background: #000; overflow: hidden; position: relative; }
 .modal-img img { width: 100%; height: 100%; object-fit: cover; filter: brightness(0.9); }
+
+/* Новый блок переключения фото Спереди / Сзади */
+.img-switcher {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 8px;
+  background: rgba(12, 22, 22, 0.85);
+  padding: 5px;
+  border-radius: 50px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  z-index: 5;
+}
+.switcher-btn {
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  padding: 6px 16px;
+  border-radius: 50px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: var(--transition-fast);
+}
+.switcher-btn.active {
+  color: var(--bg-deep);
+  background: var(--neon-yellow);
+  font-weight: 600;
+  box-shadow: 0 0 10px rgba(57, 230, 160, 0.3);
+}
+
 .modal-info { padding: 3.5rem; display: flex; flex-direction: column; justify-content: center; }
 .modal-info h3 { font-family: 'Playfair Display', serif; font-size: 2.2rem; margin-bottom: 0.6rem; font-weight: 400; }
 .modal-info .price { font-size: 1.8rem; color: var(--accent-orange); font-weight: 600; margin-bottom: 1.5rem; }
@@ -561,16 +597,16 @@ const CATALOG_CATEGORIES = [
 
 /* ==========================================
    3. БАЗА ДАННЫХ ТОВАРОВ (ПРОДУКТЫ)
-   Вы можете легко добавлять, удалять или изменять элементы списка
+   Добавлены свойства imageBack для просмотра товаров со спины
    ========================================== */
 const sampleProducts = [
-  { id: 1, name: "Футболка 'Urban Poetry'", description: "Плотный органический хлопок высокой плотности (240 г/м²). Прямой крой, износостойкий концептуальный принт на груди и аккуратная окантовка швов.", price: 2990, category: "tshirt", badge: "Хит", image: "https://images.unsplash.com/photo-1502082553048-f009c37129b9?w=600&fit=crop" },
-  { id: 2, name: "Худи 'Over Size Edition'", description: "Тяжелый премиальный футер трехнитка с мягким начесом. Глубокий капюшон, минималистичная вышивка на рукаве.", price: 5490, category: "hoodie", badge: "Limit", image: "https://images.unsplash.com/photo-1556911220-e15b29be8c8f?w=600&fit=crop" },
-  { id: 3, name: "Футболка 'Minimal Line'", description: "Анатомический крой, дышащая ткань. Минималистичная абстрактная геометрия, нанесенная методом шелкографии.", price: 2490, category: "tshirt", badge: "New", image: "https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?w=600&fit=crop" },
-  { id: 4, name: "Свитшот 'Monochrome'", description: "Классический бруталистский силуэт, держащий форму. Вышивка фирменного логотипа тональными нитями.", price: 4890, category: "hoodie", badge: "Premium", image: "https://images.unsplash.com/photo-1551028719-00167b16eac5?w=600&fit=crop" },
-  { id: 5, name: "Поясной ремень 'Tech Belt'", description: "Ремень из текстильной сверхпрочной стропы со стильной магнитной пряжкой быстрого фиксажа и неоновыми элементами.", price: 1990, category: "accessory", badge: "Gear", image: "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=600&fit=crop" },
-  { id: 6, name: "Сумка-шоппер 'Canvas Bag'", description: "Вместительный шоппер из плотного канваса с внутренним карманом на молнии и крупной неоново-мятной типографикой.", price: 1790, category: "bag", badge: "Style", image: "https://images.unsplash.com/photo-1544816155-12df9643f363?w=600&fit=crop" },
-  { id: 7, name: "Кольцо 'Geometric Ring'", description: "Фактурное кольцо из ювелирного сплава с чернением. Универсальный геометрический дизайн, завершающий ваш образ.", price: 3200, category: "accessory", badge: "Silver", image: "https://images.unsplash.com/photo-1605100804763-247f67b3557e?w=600&fit=crop" }
+  { id: 1, name: "Футболка 'Urban Poetry'", description: "Плотный органический хлопок высокой плотности (240 г/м²). Прямой крой, износостойкий концептуальный принт на груди и аккуратная окантовка швов.", price: 2990, category: "tshirt", badge: "Хит", image: "https://images.unsplash.com/photo-1502082553048-f009c37129b9?w=600&fit=crop", imageBack: "https://images.unsplash.com/photo-1521572267360-ee0c2909d518?w=600&fit=crop" },
+  { id: 2, name: "Худи 'Over Size Edition'", description: "Тяжелый премиальный футер трехнитка с мягким начесом. Глубокий капюшон, минималистичная вышивка на рукаве.", price: 5490, category: "hoodie", badge: "Limit", image: "https://images.unsplash.com/photo-1556911220-e15b29be8c8f?w=600&fit=crop", imageBack: "https://images.unsplash.com/photo-1543163521-1bf539c55dd2?w=600&fit=crop" },
+  { id: 3, name: "Футболка 'Minimal Line'", description: "Анатомический крой, дышащая ткань. Минималистичная абстрактная геометрия, нанесенная методом шелкографии.", price: 2490, category: "tshirt", badge: "New", image: "https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?w=600&fit=crop", imageBack: "https://images.unsplash.com/photo-1562157873-818bc0726f68?w=600&fit=crop" },
+  { id: 4, name: "Свитшот 'Monochrome'", description: "Классический бруталистский силуэт, держащий форму. Вышивка фирменного логотипа тональными нитями.", price: 4890, category: "hoodie", badge: "Premium", image: "https://images.unsplash.com/photo-1551028719-00167b16eac5?w=600&fit=crop", imageBack: "https://images.unsplash.com/photo-1434389677669-e08b4cac3105?w=600&fit=crop" },
+  { id: 5, name: "Поясной ремень 'Tech Belt'", description: "Ремень из текстильной сверхпрочной стропы со стильной магнитной пряжкой быстрого фиксажа и неоновыми элементами.", price: 1990, category: "accessory", badge: "Gear", image: "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=600&fit=crop", imageBack: "https://images.unsplash.com/photo-1624222247344-550fb8ef98ed?w=600&fit=crop" },
+  { id: 6, name: "Сумка-шоппер 'Canvas Bag'", description: "Вместительный шоппер из плотного канваса с внутренним карманом на молнии и крупной неоново-мятной типографикой.", price: 1790, category: "bag", badge: "Style", image: "https://images.unsplash.com/photo-1544816155-12df9643f363?w=600&fit=crop", imageBack: "https://images.unsplash.com/photo-1575032617751-6ddec2089882?w=600&fit=crop" },
+  { id: 7, name: "Кольцо 'Geometric Ring'", description: "Фактурное кольцо из ювелирного сплава с чернением. Универсальный геометрический дизайн, завершающий ваш образ.", price: 3200, category: "accessory", badge: "Silver", image: "https://images.unsplash.com/photo-1605100804763-247f67b3557e?w=600&fit=crop", imageBack: "https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=600&fit=crop" }
 ];
 
 /* ==========================================
@@ -776,7 +812,16 @@ function openModal(id) {
   if (!p) return;
   
   $('#modalContent').innerHTML = `
-    <div class="modal-img"><img src="${p.image}" alt="${esc(p.name)}"></div>
+    <div class="modal-img">
+      <img id="modalMainImg" src="${p.image}" alt="${esc(p.name)}">
+      
+      ${p.imageBack ? `
+      <div class="img-switcher">
+        <button class="switcher-btn active" data-img="${p.image}">Спереди</button>
+        <button class="switcher-btn" data-img="${p.imageBack}">Сзади</button>
+      </div>
+      ` : ''}
+    </div>
     <div class="modal-info">
       <h3>${esc(p.name)}</h3>
       <div class="price">${fmtPrice(p.price)}</div>
@@ -792,6 +837,16 @@ function openModal(id) {
     </div>
   `;
   $('#productModal').classList.add('open');
+  
+  // Логика работы кнопок Спереди / Сзади
+  const switcherBtns = $$('.switcher-btn');
+  switcherBtns.forEach(btn => {
+    btn.onclick = () => {
+      switcherBtns.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      $('#modalMainImg').src = btn.dataset.img;
+    };
+  });
   
   let currentQty = 1;
   $('#mMinus').onclick = () => { if (currentQty > 1) { currentQty--; $('#mQty').textContent = currentQty; } };
