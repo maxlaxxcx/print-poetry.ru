@@ -146,7 +146,7 @@ h2.fade-section span { display: block; font-size: 1rem; font-family: 'Inter', sa
 .feature-box h4 { font-size: 1.05rem; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem; color: var(--neon-yellow); }
 .feature-box p { font-size: 0.85rem; color: var(--text-muted); margin: 0; }
 
-/* Форма Контактов и Технологичный Дизайн Форм */
+/* Форма Контактов */
 .contact-form { background: var(--bg-darker); border: 1px solid var(--border-glass); border-radius: 6px; padding: 2.5rem; }
 .tech-form .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 1.5rem; }
 .form-group { display: flex; flex-direction: column; gap: 0.5rem; }
@@ -529,7 +529,7 @@ const esc = text => {
   return div.innerHTML;
 };
 
-// Зарегистрированные SPA страницы
+// Зарегистрированные SPA страницы (Добавлена страница reviews)
 const pages = {
   home: $('#home'),
   catalog: $('#catalog'),
@@ -573,13 +573,12 @@ document.addEventListener('click', (e) => {
     e.preventDefault();
     const page = target.getAttribute('data-page');
     switchPage(page);
-    // Обновляем хэш в адресе для эстетики
     window.history.pushState(null, null, `#${page}`);
   }
 });
 
 /* ==========================================================================
-   2. ДАННЫЕ О ТОВАРАХ (БАЗА ДАННЫХ КАТАЛОГА)
+   2. ДАННЫЕ О ТОВАРАХ И ДИНАМИЧЕСКИЙ КОНТЕНТ (БАЗА ДАННЫХ КАТАЛОГА)
    ========================================================================== */
 const products = [
   { id: "h-cyber", type: "hoodie", title: "Худи 'Cybernetic Poetry' Over Size", price: 5400, oldPrice: 6800, badge: "Sale", svg: `<svg viewBox="0 0 100 100" fill="none" stroke="var(--neon-yellow)" stroke-width="1.5"><path d="M20 30 L30 15 L70 15 L80 30 L85 85 L15 85 Z" /><path d="M30 15 L35 30 L65 30 L70 15" /><path d="M15 45 L30 43 L30 85" /><path d="M85 45 L70 43 L70 85" /><rect x="38" y="45" width="24" height="24" rx="2" stroke-dasharray="2,2" /><text x="50" y="59" fill="var(--neon-yellow)" font-size="6" font-family="monospace" text-anchor="middle">[CODE]</text></svg>` },
@@ -593,7 +592,8 @@ const products = [
 let currentFilter = "all";
 let currentSearch = "";
 
-function renderCatalogGrid() {
+// Твоя оригинальная функция динамического контента каталога
+function initDynamicContent() {
   const grid = $('#catalogGrid');
   if (!grid) return;
 
@@ -639,7 +639,7 @@ $('#filterTags').onclick = (e) => {
   tag.classList.add('active');
   
   currentFilter = tag.getAttribute('data-filter');
-  renderCatalogGrid();
+  initDynamicContent();
 };
 
 /* ==========================================================================
@@ -726,12 +726,10 @@ function renderCart() {
     </div>
   `).join('');
 
-  // Обновление сумматора
   $('#summaryCount').innerText = `${cart.getTotalCount()} шт.`;
   $('#summaryTotal').innerText = `${cart.getTotalPrice()} ₽`;
 }
 
-// Селектор способов оплаты
 let currentPaymentMethod = "card";
 $('#paymentSelector').onclick = (e) => {
   const node = e.target.closest('.payment-method');
@@ -763,7 +761,6 @@ function listenFormValidation(formSelector, checkboxSelector, btnSelector) {
   checkbox.addEventListener('change', validate);
 }
 
-// Отправка чекаута
 $('#checkoutForm').onsubmit = (e) => {
   e.preventDefault();
   showToast("Заказ сформирован! Менеджер свяжется с вами.");
@@ -788,7 +785,7 @@ $('.cart-icon').onclick = () => switchPage('cart');
 
 $('#searchInput').oninput = (e) => { 
   currentSearch = e.target.value; 
-  renderCatalogGrid(); 
+  initDynamicContent(); 
 };
 
 function showToast(msg) {
@@ -815,7 +812,8 @@ function refreshScrollObserver() {
 }
 
 window.addEventListener('scroll', () => { 
-  $('#header').classList.toggle('scrolled', window.scrollY > 20); \n});
+  $('#header').classList.toggle('scrolled', window.scrollY > 20); 
+});
 
 $('#contactForm').onsubmit = (e) => { 
   e.preventDefault(); 
@@ -830,7 +828,6 @@ $('#contactForm').onsubmit = (e) => {
 const REVIEWS_STORAGE_KEY = "pp_reviews_store";
 let selectedRating = 5;
 
-// Начальная база базовых отзывов (если в LocalStorage еще пусто)
 const defaultReviews = [
   { name: "Кирилл", rating: 5, text: "Взял худи Over Size. Качество футера — пушка, плотное, капюшон держит форму идеально. Принт после третьей стирки как новый. Респект Максиму!", date: "22.06.2026" },
   { name: "Анна", rating: 5, text: "Футболка Minimal Line превзошла ожидания. Мягкий хлопок, крой оверсайз сел как надо. Мятный неон вживую выглядит очень футуристично.", date: "19.06.2026" },
@@ -862,7 +859,7 @@ function renderReviews() {
   refreshScrollObserver();
 }
 
-// Переключение звезд в форме
+// Выбор рейтинга в форме
 $$('#ratingStarsContainer .payment-method').forEach(el => {
   el.onclick = () => {
     $$('#ratingStarsContainer .payment-method').forEach(m => m.classList.remove('active'));
@@ -871,7 +868,7 @@ $$('#ratingStarsContainer .payment-method').forEach(el => {
   };
 });
 
-// Обработка отправки нового отзыва
+// Отправка отзыва
 $('#reviewForm').onsubmit = (e) => {
   e.preventDefault();
   
@@ -886,16 +883,14 @@ $('#reviewForm').onsubmit = (e) => {
   };
   
   const currentReviews = getReviews();
-  currentReviews.unshift(newReview); // Добавляем в начало списка
+  currentReviews.unshift(newReview);
   localStorage.setItem(REVIEWS_STORAGE_KEY, JSON.stringify(currentReviews));
   
   showToast("Отзыв успешно опубликован!");
   
-  // Сброс формы
   $('#reviewForm').reset();
   $('#revSubmitBtn').disabled = true;
   
-  // Переключаем дефолтные звезды обратно на 5
   $$('#ratingStarsContainer .payment-method').forEach(m => m.classList.toggle('active', m.dataset.rating === "5"));
   selectedRating = 5;
   
@@ -907,9 +902,9 @@ $('#reviewForm').onsubmit = (e) => {
    ========================================================================== */
 document.addEventListener('DOMContentLoaded', () => { 
   cart.updateUI(); 
-  renderCatalogGrid(); 
+  initDynamicContent(); // ВОЗВРАЩЕНО НА МЕСТО: исправляет ошибку рендеринга товаров
   
-  // Обработка прямой ссылки на страницу при перезагрузке (например, #catalog)
+  // Управление хэшами
   const initialHash = window.location.hash.replace('#', '');
   if (initialHash && pages[initialHash]) {
     switchPage(initialHash);
