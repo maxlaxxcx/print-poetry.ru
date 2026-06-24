@@ -321,6 +321,18 @@ h2 span { color: var(--neon-yellow); font-style: italic; text-shadow: 0 0 20px r
 .privacy-agreement input[type="checkbox"]:checked::after { transform: scale(1); }
 
 /* ==========================================================================
+   СТИЛИ ДЛЯ ОТЗЫВОВ (REVIEWS STYLES)
+   ========================================================================== */
+.reviews-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 2.5rem; margin-top: 1rem; }
+.review-card { background: var(--bg-glass); border: 1px solid var(--border-glass); border-radius: var(--radius-md); padding: 2rem; backdrop-filter: blur(10px); box-shadow: 0 10px 30px rgba(0,0,0,0.4); display: flex; flex-direction: column; gap: 1.2rem; transition: var(--transition); }
+.review-card:hover { border-color: rgba(57, 230, 160, 0.4); box-shadow: 0 20px 40px rgba(57, 230, 160, 0.12); transform: translateY(-4px); }
+.review-header { display: flex; justify-content: space-between; align-items: center; }
+.review-author { font-family: 'Playfair Display', serif; font-size: 1.3rem; font-weight: 400; color: var(--text-white); }
+.review-rating { color: var(--accent-orange); font-size: 1.1rem; letter-spacing: 2px; }
+.review-text { color: var(--text-muted); font-size: 0.95rem; line-height: 1.6; font-style: italic; }
+.review-item-tag { align-self: flex-start; background: rgba(255,255,255,0.03); color: var(--text-white); font-size: 0.8rem; padding: 0.4rem 1rem; border-radius: 50px; border: 1px solid rgba(255,255,255,0.05); }
+
+/* ==========================================================================
    О СТРАНИЦАХ: СТРАНИЦА "О БРЕНДЕ" И "ПОЛИТИКА"
    ========================================================================== */
 .about-layout { display: grid; grid-template-columns: 1.1fr 1fr; gap: 5rem; align-items: center; margin-bottom: 6rem; }
@@ -364,6 +376,7 @@ footer { background: #040808; border-top: 1px solid rgba(255,255,255,0.05); padd
     <nav class="nav-desktop">
       <a href="#home" data-page="home" class="active">Главная</a>
       <a href="#catalog" data-page="catalog">Каталог</a>
+      <a href="#reviews" data-page="reviews">Отзывы</a>
       <a href="#about" data-page="about">О бренде</a>
     </nav>
     <div class="header-actions">
@@ -380,6 +393,7 @@ footer { background: #040808; border-top: 1px solid rgba(255,255,255,0.05); padd
 <div class="mobile-menu" id="mobileMenu">
   <a href="#home" data-page="home">Главная</a>
   <a href="#catalog" data-page="catalog">Каталог</a>
+  <a href="#reviews" data-page="reviews">Отзывы</a>
   <a href="#about" data-page="about">О бренде</a>
   <a href="#cart" data-page="cart">Корзина <span id="mobileCartCount"></span></a>
 </div>
@@ -430,6 +444,38 @@ footer { background: #040808; border-top: 1px solid rgba(255,255,255,0.05); padd
       <div class="no-results hidden" id="noResults" style="text-align:center; padding:5rem 0;">
         <h3>Товары не найдены</h3>
         <button class="btn-tech mt-4" onclick="resetFilters()">Сбросить поиск</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="reviews" class="page">
+    <div class="container">
+      <h2 class="fade-section">Отзывы <span>Покупателей</span></h2>
+      <div class="reviews-grid fade-section">
+        <div class="review-card">
+          <div class="review-header">
+            <span class="review-author">Артем К.</span>
+            <span class="review-rating">★★★★★</span>
+          </div>
+          <p class="review-text">«Качество худи — это нечто. Материал плотный, тяжелый, форму держит идеально после пяти стирок. Принт нанесен на совесть, не трескается.»</p>
+          <span class="review-item-tag">Худи 'Over Size Edition'</span>
+        </div>
+        <div class="review-card">
+          <div class="review-header">
+            <span class="review-author">Мария Д.</span>
+            <span class="review-rating">★★★★★</span>
+          </div>
+          <p class="review-text">«Шоппер превзошел все ожидания! Ткань очень плотная (настоящий канвас), а неоновая мятная типографика выглядит вживую еще ярче, чем на фото на сайте. Внутри удобный карман на молнии.»</p>
+          <span class="review-item-tag">Сумка-шоппер 'Canvas Bag'</span>
+        </div>
+        <div class="review-card">
+          <div class="review-header">
+            <span class="review-author">Дмитрий Л.</span>
+            <span class="review-rating">★★★★★</span>
+          </div>
+          <p class="review-text">«Заказывал футболку Urban Poetry. Села идеально, окантовка швов ровная. Доставка СДЭКом пришла за 3 дня до Питера. Однозначно буду брать еще из следующего дропа.»</p>
+          <span class="review-item-tag">Футболка 'Urban Poetry'</span>
+        </div>
       </div>
     </div>
   </div>
@@ -557,6 +603,7 @@ footer { background: #040808; border-top: 1px solid rgba(255,255,255,0.05); padd
       <div class="footer-col">
         <h4>Навигация</h4>
         <a href="#catalog" data-page="catalog">Каталог товаров</a>
+        <a href="#reviews" data-page="reviews">Отзывы покупателей</a>
         <a href="#about" data-page="about">О нашем бренде</a>
       </div>
       <div class="footer-col">
@@ -1000,7 +1047,8 @@ function placeOrder() {
   }, 1400);
 }
 
-const pages = { home: $('#home'), catalog: $('#catalog'), about: $('#about'), cart: $('#cart'), privacy: $('#privacy') };
+// ДОБАВЛЕНА СТРАНИЦА REVIEWS В СПИСОК СТРАНИЦ КЛИЕНТСКОГО РОУТИНГА
+const pages = { home: $('#home'), catalog: $('#catalog'), reviews: $('#reviews'), about: $('#about'), cart: $('#cart'), privacy: $('#privacy') };
 function switchPage(pageId) {
   if (!pages[pageId]) pageId = 'home';
   Object.values(pages).forEach(p => p.classList.remove('active'));
