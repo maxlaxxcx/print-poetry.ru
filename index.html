@@ -162,7 +162,7 @@ h2 span { color: var(--neon-yellow); font-style: italic; text-shadow: 0 0 20px r
 
 /* ==========================================================================
    КАТАЛОГ И КАРТОЧКИ (CATALOG & CARDS)
-   ========================================================================== */
+   ========================================================================= */
 .controls-row { display: flex; flex-wrap: wrap; gap: 1.5rem; justify-content: space-between; align-items: center; margin-bottom: 3.5rem; }
 .filters { display: flex; flex-wrap: wrap; gap: 0.4rem; background: var(--bg-darker); padding: 0.4rem; border-radius: 50px; border: 1px solid rgba(255,255,255,0.05); }
 .filter-btn { background: none; border: none; color: var(--text-muted); padding: 0.65rem 1.6rem; border-radius: 50px; font-size: 0.95rem; cursor: pointer; transition: var(--transition); font-weight: 500; }
@@ -397,7 +397,7 @@ footer { background: #040808; border-top: 1px solid rgba(255,255,255,0.05); padd
           </button>
         </div>
         <div class="hero-visual">
-          <img src="./assets/img/hero.jpg" class="main-hero-img" alt="Новая Коллекция Одежды">
+          <img src="assets/img/hero.jpg" class="main-hero-img" alt="Новая Коллекция Одежды">
           <div class="floating-card">
             <img src="assets/img/card-img-wrap.jpg" alt="Item">
             <h4>Полуночная роза</h4>
@@ -579,7 +579,7 @@ const CONFIG = {
   brandName: "PRINT POETRY",
   contactEmail: "print.poetry@art.me",
   deliveryPrice: 300,
-  freeDeliveryThreshold: 5000, // Бесплатная доставка при заказе от этой суммы
+  freeDeliveryThreshold: 5000,
   currency: " ₽",
   storageKey: "pp_cart_secure_store"
 };
@@ -596,8 +596,7 @@ const CATALOG_CATEGORIES = [
 ];
 
 /* ==========================================
-   3. БАЗА ДАННЫХ ТОВАРОВ (ПРОДУКТЫ)
-   Здесь возвращены все 7 товаров со ссылками на перед и зад в папку assets/img/
+   3. БАЗА ДАННЫХ ТОВАРОВ (ПРОДУКТЫ - 7 ШТУК)
    ========================================== */
 const sampleProducts = [
   { 
@@ -627,8 +626,8 @@ const sampleProducts = [
     price: 2490, 
     category: "tshirt", 
     badge: "New", 
-    image: "assets/img/ffutbolka 1.jpeg", 
-    imageBack: "assets/img/ffutbolka 2.jpeg" 
+    image: "assets/img/futbolka 1.jpeg", 
+    imageBack: "assets/img/futbolka 2.jpeg" 
   },
   { 
     id: 4, 
@@ -692,7 +691,7 @@ const esc = string => {
 };
 
 /* ==========================================
-   5. УПРАВЛЕНИЕ КОРЗИНОЙ (БИЗНЕС-ЛОГИКА)
+   5. УПРАВЛЕНИЕ КОРЗИНОЙ
    ========================================== */
 class Cart {
   constructor() {
@@ -861,7 +860,7 @@ function attachCardEvents() {
 }
 
 /* ==========================================
-   7. ОПИСАНИЕ И МОДАЛЬНЫЕ ОКНА ТОВАРОВ
+   7. МОДАЛЬНОЕ ОКНО ДЛЯ ПРОСМОТРА ТОВАРОВ
    ========================================== */
 function openModal(id) {
   const p = products.find(x => x.id === id); 
